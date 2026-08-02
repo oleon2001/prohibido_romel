@@ -1,0 +1,256 @@
+.portal-container {
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.portal-header {
+  margin-bottom: 40px;
+}
+
+.astral-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.title-icon {
+  color: #d4af37;
+  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.6));
+  animation: floatIcon 3s infinite ease-in-out alternate;
+}
+
+.portal-title {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  background: linear-gradient(135deg, #ffd700 0%, #c5a3ff 50%, #00e5ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  filter: drop-shadow(0 0 15px rgba(138, 43, 226, 0.4));
+}
+
+.portal-subtitle {
+  font-size: 1.1rem;
+  color: #a8a0c2;
+  margin: 12px 0 0;
+  font-style: italic;
+}
+
+/* Pulsing Cosmic Orb */
+.portal-orb-container {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-orb {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb-core {
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, #8a2be2 0%, #0d001a 70%, #000 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(138, 43, 226, 0.8), 0 0 80px rgba(0, 229, 255, 0.4);
+  animation: pulseCore 3s infinite alternate ease-in-out;
+}
+
+.orb-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  pointer-events: none;
+}
+
+.ring-a {
+  width: 160px;
+  height: 160px;
+  border-top-color: rgba(212, 175, 55, 0.6);
+  border-bottom-color: rgba(212, 175, 55, 0.6);
+  animation: spinPortal 8s infinite linear;
+}
+
+.ring-b {
+  width: 190px;
+  height: 190px;
+  border-left-color: rgba(0, 229, 255, 0.5);
+  border-right-color: rgba(0, 229, 255, 0.5);
+  animation: spinPortal 12s infinite linear reverse;
+}
+
+.ring-c {
+  width: 220px;
+  height: 220px;
+  border-top-color: rgba(138, 43, 226, 0.4);
+  border-right-color: rgba(138, 43, 226, 0.4);
+  animation: spinPortal 16s infinite linear;
+}
+
+/* Glassmorphism Cards */
+.portal-actions {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  max-width: 740px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 700px) {
+  .portal-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.glass-card {
+  flex: 1;
+  background: rgba(10, 5, 25, 0.45);
+  border: 1px solid rgba(197, 163, 255, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-title {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffd700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+}
+
+.input-group {
+  display: flex;
+  gap: 8px;
+  position: relative;
+}
+
+.portal-input {
+  flex-grow: 1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(197, 163, 255, 0.25);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.portal-input:focus {
+  outline: none;
+  border-color: #00e5ff;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.4);
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.portal-btn {
+  background: linear-gradient(135deg, #8a2be2 0%, #4b0082 100%);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+}
+
+.portal-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
+  background: linear-gradient(135deg, #9932cc 0%, #551a8b 100%);
+}
+
+.search-btn {
+  background: linear-gradient(135deg, #00bfff 0%, #008b8b 100%);
+  box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
+}
+
+.search-btn:hover {
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+  background: linear-gradient(135deg, #00e5ff 0%, #00a8a8 100%);
+}
+
+.error-text {
+  color: #ff3e3e;
+  font-size: 0.8rem;
+  margin-top: 10px;
+  animation: shakeError 0.3s ease-in-out;
+}
+
+.portal-footer {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 2px;
+  margin-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 16px;
+  width: 100%;
+}
+
+/* Animations */
+@keyframes spinPortal {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseCore {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.6), 0 0 50px rgba(0, 229, 255, 0.3);
+  }
+  100% {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(138, 43, 226, 0.9), 0 0 90px rgba(0, 229, 255, 0.6);
+  }
+}
+
+@keyframes floatIcon {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-6px); }
+}
+
+@keyframes shakeError {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}

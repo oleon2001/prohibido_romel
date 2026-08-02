@@ -1,0 +1,85 @@
+.math-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 50%, #03020c 0%, #010005 80%);
+  overflow: hidden;
+  z-index: -2;
+}
+
+.physics-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Ambient Nebulae with smooth movement */
+.nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.12;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  animation: orbitNebula 40s infinite linear;
+}
+
+.nebula-purple {
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, rgba(138, 43, 226, 0.5) 0%, rgba(0, 0, 0, 0) 70%);
+  top: -15%;
+  left: -15%;
+  animation-duration: 70s;
+}
+
+.nebula-gold {
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
+  bottom: -15%;
+  right: -15%;
+  animation-duration: 65s;
+  animation-direction: reverse;
+}
+
+.nebula-blue {
+  width: 65vw;
+  height: 65vw;
+  background: radial-gradient(circle, rgba(0, 191, 255, 0.35) 0%, rgba(0, 0, 0, 0) 70%);
+  top: 30%;
+  left: 20%;
+  animation-duration: 90s;
+}
+
+/* Astral Grid Overlay */
+.astral-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+  background-size: 90px 90px;
+  background-position: center center;
+  pointer-events: none;
+}
+
+@keyframes orbitNebula {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(3vw, 4vh) rotate(180deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}

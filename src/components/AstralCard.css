@@ -1,0 +1,409 @@
+.card-container {
+  position: relative;
+  width: 320px;
+  height: 480px;
+  margin: 10px auto;
+  perspective: 1000px;
+  z-index: 20;
+}
+
+.astral-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 12px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  background-color: #0b0712;
+}
+
+/* Card Glow Themes */
+.astral-card.prohibited-theme {
+  border: 3.5px solid #ff2b2b;
+  box-shadow: 0 0 20px rgba(255, 43, 43, 0.3), inset 0 0 20px rgba(255, 43, 43, 0.1);
+  background: linear-gradient(180deg, #1b060b 0%, #080206 100%);
+}
+
+.astral-card.permitted-theme {
+  border: 3.5px solid #d4af37;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(212, 175, 55, 0.1);
+  background: linear-gradient(180deg, #141108 0%, #070603 100%);
+}
+
+/* Dynamic Holographic Foil Overlay */
+.card-holo-foil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 9px;
+  pointer-events: none;
+  z-index: 4;
+  background-image: linear-gradient(
+    115deg,
+    rgba(255, 0, 150, 0.25) 0%,
+    rgba(0, 255, 230, 0.25) 25%,
+    rgba(255, 230, 0, 0.25) 50%,
+    rgba(0, 255, 100, 0.25) 75%,
+    rgba(255, 0, 150, 0.25) 100%
+  );
+  background-size: 175% 175%;
+  mix-blend-mode: color-dodge;
+  transition: opacity 0.4s ease;
+}
+
+/* Gloss Lens Overlay */
+.card-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 9px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Pulsing Neon Glow border effects */
+.card-neon-aura {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.prohibited-theme .card-neon-aura {
+  box-shadow: inset 0 0 30px rgba(255, 43, 43, 0.3);
+  animation: pulseNeonAura 3s infinite alternate ease-in-out;
+}
+
+.permitted-theme .card-neon-aura {
+  box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.3);
+  animation: pulseNeonAura 3s infinite alternate ease-in-out;
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 5px;
+  z-index: 2;
+}
+
+.card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.75px;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+
+.card-attribute {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 7px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.5px;
+}
+
+.attr-prohibited {
+  background: rgba(255, 43, 43, 0.25);
+  color: #ff4a4a;
+  border: 1px solid rgba(255, 43, 43, 0.6);
+  box-shadow: 0 0 10px rgba(255, 43, 43, 0.3);
+}
+
+.attr-permitted {
+  background: rgba(212, 175, 55, 0.2);
+  color: #ffd700;
+  border: 1px solid rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+/* Levels */
+.card-levels {
+  display: flex;
+  gap: 3.5px;
+  margin: 5px 0;
+  align-items: center;
+  z-index: 2;
+}
+
+.level-star {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.star-icon {
+  color: #ffd700;
+  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.7));
+  animation: rotateStar 5s infinite linear;
+}
+
+.level-label {
+  font-family: monospace;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-left: auto;
+  font-weight: 600;
+}
+
+/* Image Box */
+.card-image-box {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border: 2px solid #5a546d;
+  background: #000;
+  overflow: hidden;
+  box-sizing: border-box;
+  z-index: 2;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.prohibited-theme .card-image-box {
+  border-color: #5c181a;
+}
+
+.permitted-theme .card-image-box {
+  border-color: #635327;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.astral-card:hover .card-img {
+  transform: scale(1.06) rotate(1deg);
+}
+
+.holo-seal {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  mix-blend-mode: difference;
+  box-shadow: 0 0 6px rgba(255,255,255,0.4);
+  animation: spinPortal 10s infinite linear;
+}
+
+.holo-seal.proh {
+  background: rgba(255, 43, 43, 0.4);
+}
+
+.holo-seal.perm {
+  background: rgba(212, 175, 55, 0.4);
+}
+
+/* Card Body */
+.card-body {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 4, 18, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 8px 10px;
+  border-radius: 6px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 6px;
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.card-type {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #a8a0c2;
+  letter-spacing: 0.75px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 2px;
+}
+
+.card-description {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: #e2daff;
+  margin: 0;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.card-description em {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.prohibited-theme .card-description em {
+  color: #ff4a4a;
+}
+
+.permitted-theme .card-description em {
+  color: #ffd700;
+}
+
+/* Stats Bar */
+.card-stats {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 4px;
+  margin-top: 5px;
+}
+
+.stat-item {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #fff;
+}
+
+.stat-lbl {
+  color: #a8a0c2;
+  font-weight: 800;
+}
+
+.stat-val {
+  font-weight: bold;
+}
+
+.prohibited-theme .stat-val {
+  color: #ff4a4a;
+}
+
+.permitted-theme .stat-val {
+  color: #ffd700;
+}
+
+/* Digivolve animation screen overlay */
+.digivolve-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(3, 2, 7, 0.92);
+  border-radius: 12px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.digi-ring {
+  position: absolute;
+  border: 1.5px dashed;
+  border-radius: 50%;
+  animation: spinRing 2.5s linear infinite;
+  opacity: 0.5;
+}
+
+.ring-1 {
+  width: 210px;
+  height: 210px;
+  border-color: #ffd700;
+  animation-duration: 4s;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+}
+
+.ring-2 {
+  width: 150px;
+  height: 150px;
+  border-color: #8a2be2;
+  animation-duration: 3s;
+  animation-direction: reverse;
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.1);
+}
+
+.ring-3 {
+  width: 90px;
+  height: 90px;
+  border-color: #00e5ff;
+  animation-duration: 2s;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+}
+
+.digi-text {
+  font-family: monospace;
+  color: #00e5ff;
+  font-size: 0.72rem;
+  margin-top: 220px;
+  letter-spacing: 2px;
+  animation: pulseText 1s infinite alternate;
+  z-index: 31;
+  text-shadow: 0 0 6px rgba(0, 229, 255, 0.8);
+}
+
+/* Animations */
+@keyframes rotateStar {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseText {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+@keyframes pulseNeonAura {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.65; }
+}
+
+/* Glitch effect style */
+.digi-glitch {
+  animation: glitch 0.35s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-3px, 2px) skewX(2deg); }
+  40% { transform: translate(2px, -3px) skewY(-2deg); }
+  60% { transform: translate(-1px, 1px); }
+  80% { transform: translate(3px, -2px) skewX(-1deg); }
+  100% { transform: translate(0); }
+}
