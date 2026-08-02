@@ -10,7 +10,7 @@
 .astral-card {
   width: 100%;
   height: 100%;
-  border-radius: 12px;
+  border-radius: 10px;
   box-sizing: border-box;
   padding: 12px;
   position: relative;
@@ -21,41 +21,40 @@
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  background-color: #0b0712;
+  background-color: #0b0d13;
 }
 
-/* Card Glow Themes */
+/* Card Glow Themes - Refined Metallic & Deep Crimson */
 .astral-card.prohibited-theme {
-  border: 3.5px solid #ff2b2b;
-  box-shadow: 0 0 20px rgba(255, 43, 43, 0.3), inset 0 0 20px rgba(255, 43, 43, 0.1);
-  background: linear-gradient(180deg, #1b060b 0%, #080206 100%);
+  border: 3px solid #c93b3b;
+  box-shadow: 0 0 25px rgba(201, 59, 59, 0.25), inset 0 0 15px rgba(201, 59, 59, 0.15);
+  background: linear-gradient(180deg, #18090b 0%, #0a0405 100%);
 }
 
 .astral-card.permitted-theme {
-  border: 3.5px solid #d4af37;
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), inset 0 0 20px rgba(212, 175, 55, 0.1);
-  background: linear-gradient(180deg, #141108 0%, #070603 100%);
+  border: 3px solid #d8b878;
+  box-shadow: 0 0 25px rgba(216, 184, 120, 0.25), inset 0 0 15px rgba(216, 184, 120, 0.15);
+  background: linear-gradient(180deg, #14120c 0%, #080705 100%);
 }
 
-/* Dynamic Holographic Foil Overlay */
+/* Elegant Sheen Overlay (Subtle Metallic Foil) */
 .card-holo-foil {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  border-radius: 9px;
+  border-radius: 7px;
   pointer-events: none;
   z-index: 4;
   background-image: linear-gradient(
     115deg,
-    rgba(255, 0, 150, 0.25) 0%,
-    rgba(0, 255, 230, 0.25) 25%,
-    rgba(255, 230, 0, 0.25) 50%,
-    rgba(0, 255, 100, 0.25) 75%,
-    rgba(255, 0, 150, 0.25) 100%
+    rgba(216, 184, 120, 0.18) 0%,
+    rgba(255, 255, 255, 0.08) 35%,
+    rgba(201, 59, 59, 0.15) 70%,
+    rgba(216, 184, 120, 0.18) 100%
   );
-  background-size: 175% 175%;
+  background-size: 180% 180%;
   mix-blend-mode: color-dodge;
   transition: opacity 0.4s ease;
 }
@@ -67,12 +66,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border-radius: 9px;
+  border-radius: 7px;
   pointer-events: none;
   z-index: 5;
 }
 
-/* Pulsing Neon Glow border effects */
 .card-neon-aura {
   position: absolute;
   top: 0;
@@ -81,18 +79,7 @@
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-}
-
-.prohibited-theme .card-neon-aura {
-  box-shadow: inset 0 0 30px rgba(255, 43, 43, 0.3);
-  animation: pulseNeonAura 3s infinite alternate ease-in-out;
-}
-
-.permitted-theme .card-neon-aura {
-  box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.3);
-  animation: pulseNeonAura 3s infinite alternate ease-in-out;
+  opacity: 0.4;
 }
 
 /* Header */
@@ -100,18 +87,18 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1.5px solid rgba(200, 170, 110, 0.25);
   padding-bottom: 5px;
   z-index: 2;
 }
 
 .card-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.95rem;
-  font-weight: 900;
-  letter-spacing: 0.75px;
-  color: #fff;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.25);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -119,11 +106,11 @@
 }
 
 .card-attribute {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.65rem;
   font-weight: 800;
-  padding: 3px 7px;
-  border-radius: 4px;
+  padding: 2px 7px;
+  border-radius: 3px;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -131,17 +118,15 @@
 }
 
 .attr-prohibited {
-  background: rgba(255, 43, 43, 0.25);
-  color: #ff4a4a;
-  border: 1px solid rgba(255, 43, 43, 0.6);
-  box-shadow: 0 0 10px rgba(255, 43, 43, 0.3);
+  background: rgba(201, 59, 59, 0.2);
+  color: #e55555;
+  border: 1px solid rgba(201, 59, 59, 0.5);
 }
 
 .attr-permitted {
-  background: rgba(212, 175, 55, 0.2);
-  color: #ffd700;
-  border: 1px solid rgba(212, 175, 55, 0.6);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  background: rgba(216, 184, 120, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(216, 184, 120, 0.5);
 }
 
 /* Levels */
@@ -153,24 +138,15 @@
   z-index: 2;
 }
 
-.level-star {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .star-icon {
-  color: #ffd700;
-  filter: drop-shadow(0 0 3px rgba(255, 215, 0, 0.7));
-  animation: rotateStar 5s infinite linear;
+  color: var(--accent-gold);
+  filter: drop-shadow(0 0 3px rgba(216, 184, 120, 0.5));
 }
 
 .level-label {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.55);
-  margin-left: auto;
-  font-weight: 600;
+  color: var(--text-secondary);
 }
 
 /* Image Box */
@@ -178,20 +154,19 @@
   position: relative;
   width: 100%;
   height: 180px;
-  border: 2px solid #5a546d;
+  border: 1px solid rgba(200, 170, 110, 0.3);
   background: #000;
   overflow: hidden;
   box-sizing: border-box;
   z-index: 2;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
 }
 
 .prohibited-theme .card-image-box {
-  border-color: #5c181a;
+  border-color: rgba(201, 59, 59, 0.4);
 }
 
 .permitted-theme .card-image-box {
-  border-color: #635327;
+  border-color: rgba(216, 184, 120, 0.4);
 }
 
 .card-img {
@@ -202,7 +177,7 @@
 }
 
 .astral-card:hover .card-img {
-  transform: scale(1.06) rotate(1deg);
+  transform: scale(1.04);
 }
 
 .holo-seal {
@@ -215,53 +190,51 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  mix-blend-mode: difference;
-  box-shadow: 0 0 6px rgba(255,255,255,0.4);
-  animation: spinPortal 10s infinite linear;
+  border: 1px solid rgba(216, 184, 120, 0.4);
 }
 
 .holo-seal.proh {
-  background: rgba(255, 43, 43, 0.4);
+  background: rgba(201, 59, 59, 0.4);
+  color: #ff8888;
 }
 
 .holo-seal.perm {
-  background: rgba(212, 175, 55, 0.4);
+  background: rgba(216, 184, 120, 0.3);
+  color: var(--accent-gold);
 }
 
 /* Card Body */
 .card-body {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(8, 4, 18, 0.75);
+  border: 1px solid rgba(200, 170, 110, 0.15);
+  background: rgba(12, 14, 22, 0.85);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   padding: 8px 10px;
-  border-radius: 6px;
+  border-radius: 5px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-top: 6px;
   z-index: 2;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .card-type {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-heading);
   font-size: 0.62rem;
-  font-weight: 800;
-  color: #a8a0c2;
-  letter-spacing: 0.75px;
+  font-weight: 600;
+  color: var(--accent-gold);
+  letter-spacing: 1px;
   margin-bottom: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(200, 170, 110, 0.12);
   padding-bottom: 2px;
 }
 
 .card-description {
-  font-family: 'Outfit', sans-serif;
+  font-family: var(--font-body);
   font-size: 0.72rem;
-  line-height: 1.35;
-  color: #e2daff;
+  line-height: 1.4;
+  color: var(--text-primary);
   margin: 0;
   flex-grow: 1;
   overflow: hidden;
@@ -273,31 +246,31 @@
 }
 
 .prohibited-theme .card-description em {
-  color: #ff4a4a;
+  color: #e55555;
 }
 
 .permitted-theme .card-description em {
-  color: #ffd700;
+  color: var(--accent-gold);
 }
 
 /* Stats Bar */
 .card-stats {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(200, 170, 110, 0.15);
   padding-top: 4px;
   margin-top: 5px;
 }
 
 .stat-item {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .stat-lbl {
-  color: #a8a0c2;
-  font-weight: 800;
+  color: var(--text-muted);
+  font-weight: 700;
 }
 
 .stat-val {
@@ -305,11 +278,11 @@
 }
 
 .prohibited-theme .stat-val {
-  color: #ff4a4a;
+  color: #e55555;
 }
 
 .permitted-theme .stat-val {
-  color: #ffd700;
+  color: var(--accent-gold);
 }
 
 /* Digivolve animation screen overlay */
@@ -319,8 +292,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(3, 2, 7, 0.92);
-  border-radius: 12px;
+  background: rgba(8, 9, 13, 0.94);
+  border-radius: 10px;
   z-index: 30;
   display: flex;
   flex-direction: column;
@@ -331,52 +304,39 @@
 
 .digi-ring {
   position: absolute;
-  border: 1.5px dashed;
+  border: 1px dashed;
   border-radius: 50%;
-  animation: spinRing 2.5s linear infinite;
-  opacity: 0.5;
+  animation: spinRing 3s linear infinite;
+  opacity: 0.4;
 }
 
 .ring-1 {
-  width: 210px;
-  height: 210px;
-  border-color: #ffd700;
-  animation-duration: 4s;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+  width: 200px;
+  height: 200px;
+  border-color: var(--accent-gold);
 }
 
 .ring-2 {
-  width: 150px;
-  height: 150px;
-  border-color: #8a2be2;
-  animation-duration: 3s;
+  width: 140px;
+  height: 140px;
+  border-color: var(--accent-crimson);
   animation-direction: reverse;
-  box-shadow: 0 0 10px rgba(138, 43, 226, 0.1);
 }
 
 .ring-3 {
-  width: 90px;
-  height: 90px;
-  border-color: #00e5ff;
-  animation-duration: 2s;
-  box-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+  width: 80px;
+  height: 80px;
+  border-color: var(--accent-cyan-subtle);
 }
 
 .digi-text {
-  font-family: monospace;
-  color: #00e5ff;
-  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--accent-gold);
+  font-size: 0.7rem;
   margin-top: 220px;
   letter-spacing: 2px;
   animation: pulseText 1s infinite alternate;
   z-index: 31;
-  text-shadow: 0 0 6px rgba(0, 229, 255, 0.8);
-}
-
-/* Animations */
-@keyframes rotateStar {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 @keyframes spinRing {
@@ -385,25 +345,6 @@
 }
 
 @keyframes pulseText {
-  0% { opacity: 0.3; }
+  0% { opacity: 0.4; }
   100% { opacity: 1; }
-}
-
-@keyframes pulseNeonAura {
-  0% { opacity: 0.3; }
-  100% { opacity: 0.65; }
-}
-
-/* Glitch effect style */
-.digi-glitch {
-  animation: glitch 0.35s infinite;
-}
-
-@keyframes glitch {
-  0% { transform: translate(0); }
-  20% { transform: translate(-3px, 2px) skewX(2deg); }
-  40% { transform: translate(2px, -3px) skewY(-2deg); }
-  60% { transform: translate(-1px, 1px); }
-  80% { transform: translate(3px, -2px) skewX(-1deg); }
-  100% { transform: translate(0); }
 }

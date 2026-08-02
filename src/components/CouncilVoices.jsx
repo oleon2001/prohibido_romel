@@ -2,41 +2,40 @@ import React, { useEffect, useState } from "react";
 import { Volume2, VolumeX, Activity } from "lucide-react";
 import "./CouncilVoices.css";
 
-// Predefined voices phrases
+// Predefined voices phrases - Solemn & Authoritative Tribunal Tone
 export const VOICE_QUOTES = {
   prohibido: {
-    text: "¡PROHIBIDO!",
-    whisper: "El tribunal ha dictado... ¡Prohibido!",
-    style: { color: "#ff3e3e", textShadow: "0 0 10px rgba(255, 62, 62, 0.8)" }
+    text: "Prohibido.",
+    whisper: "El tribunal ha dictado la sentencia final. Prohibido.",
+    style: { color: "#c93b3b", textShadow: "0 0 10px rgba(201, 59, 59, 0.6)", fontFamily: "'Cinzel', serif" }
   },
   permitido: {
-    text: "Lo permito...",
-    whisper: "Por ahora... te concedo la existencia.",
-    style: { color: "#d4af37", textShadow: "0 0 10px rgba(212, 175, 55, 0.8)" }
+    text: "Permitido.",
+    whisper: "Se autoriza la existencia temporal en la materia.",
+    style: { color: "#d8b878", textShadow: "0 0 10px rgba(216, 184, 120, 0.6)", fontFamily: "'Cinzel', serif" }
   },
   destruyelos: {
-    text: "¡Destrúyelos a todos Romel!",
-    whisper: "No dejes rastro de su insignificante entropía.",
-    style: { color: "#bf3eff", textShadow: "0 0 10px rgba(191, 62, 255, 0.8)" }
+    text: "Destrúyelos a todos, Romel.",
+    whisper: "Sin vacilación ni remordimiento ante la entropía.",
+    style: { color: "#a878d8", textShadow: "0 0 10px rgba(168, 120, 216, 0.6)" }
   },
   jajaja: {
-    text: "¡JAJAJAJAJAJA!",
-    whisper: "Creen que su voluntad importa... ¡JAJAJAJA!",
-    style: { color: "#ff007f", textShadow: "0 0 10px rgba(255, 0, 127, 0.8)" }
+    text: "Insignificantes mortales.",
+    whisper: "Creen dominar el espacio-tiempo...",
+    style: { color: "#d87895", textShadow: "0 0 10px rgba(216, 120, 149, 0.6)" }
   },
   sucios_mortales: {
-    text: "Sucios mortales...",
-    whisper: "Esclavos del espacio-tiempo lineal.",
-    style: { color: "#00bfff", textShadow: "0 0 10px rgba(0, 191, 255, 0.8)" }
+    text: "Mortales de baja entropía.",
+    whisper: "Su voluntad es polvo en el cosmos.",
+    style: { color: "#4a9ebb", textShadow: "0 0 10px rgba(74, 158, 187, 0.6)" }
   },
   dios_sin_rezos: {
-    text: "Un dios al que nadie le reza...",
-    whisper: "Flotando en la nada absoluta.",
-    style: { color: "#a5a5a5", textShadow: "0 0 10px rgba(165, 165, 165, 0.8)" }
+    text: "Un dios al que nadie rige.",
+    whisper: "Silencio absoluto en el templo de Virgo.",
+    style: { color: "#9da5b4", textShadow: "0 0 10px rgba(157, 165, 180, 0.6)" }
   }
 };
 
-// Global audio helper using Web Speech API with support for custom pitch/rate overrides
 let speechCallbacks = { onStart: () => {}, onEnd: () => {} };
 
 export function registerSpeechListeners(onStart, onEnd) {
@@ -44,44 +43,31 @@ export function registerSpeechListeners(onStart, onEnd) {
   speechCallbacks.onEnd = onEnd;
 }
 
-export function speakText(text, preset = "creepy", customPitch = null, customRate = null) {
+export function speakText(text, preset = "grave", customPitch = null, customRate = null) {
   if (!("speechSynthesis" in window)) {
     console.warn("Speech synthesis not supported in this browser.");
     return;
   }
 
-  // Cancel current speech
   window.speechSynthesis.cancel();
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = "es-ES";
 
-  // Select a Spanish voice
   const voices = window.speechSynthesis.getVoices();
   const spanishVoice = voices.find((v) => v.lang.startsWith("es"));
   if (spanishVoice) {
     utterance.voice = spanishVoice;
   }
 
-  // Apply pitch & rate logic
+  // Serious, grave, solemn default parameters
   if (customPitch !== null && customRate !== null) {
     utterance.pitch = parseFloat(customPitch);
     utterance.rate = parseFloat(customRate);
   } else {
-    // Preset fallbacks
-    if (preset === "creepy") {
-      utterance.pitch = 0.45;
-      utterance.rate = 0.8;
-    } else if (preset === "insane") {
-      utterance.pitch = 1.6;
-      utterance.rate = 1.35;
-    } else if (preset === "robot") {
-      utterance.pitch = 1.0;
-      utterance.rate = 0.95;
-    } else {
-      utterance.pitch = 0.85;
-      utterance.rate = 1.0;
-    }
+    // Serious presets
+    utterance.pitch = 0.38; // Low grave tone
+    utterance.rate = 0.82;  // Slow authoritative pace
   }
 
   utterance.onstart = () => {
@@ -102,7 +88,6 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
   const [whispers, setWhispers] = useState([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
 
-  // Hook speech events to trigger visual oscilógrafo
   useEffect(() => {
     registerSpeechListeners(
       () => setIsSpeaking(true),
@@ -110,41 +95,35 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
     );
   }, []);
 
-  // Trigger speech when triggerQuote is set
   useEffect(() => {
     if (triggerQuote && !muted) {
       const quoteInfo = VOICE_QUOTES[triggerQuote];
       if (quoteInfo) {
-        let preset = "creepy";
-        if (triggerQuote === "jajaja" || triggerQuote === "destruyelos") preset = "insane";
-        if (triggerQuote === "sucios_mortales") preset = "robot";
-
-        speakText(quoteInfo.text, preset);
+        speakText(quoteInfo.text, "grave");
 
         const newWhisper = {
           id: Date.now(),
           text: quoteInfo.text,
           whisper: quoteInfo.whisper,
           style: quoteInfo.style,
-          x: Math.random() * 60 + 20,
-          y: Math.random() * 60 + 20,
+          x: Math.random() * 50 + 25,
+          y: Math.random() * 50 + 25,
         };
 
-        setWhispers((prev) => [newWhisper, ...prev].slice(0, 5));
+        setWhispers((prev) => [newWhisper, ...prev].slice(0, 4));
 
         setTimeout(() => {
           setWhispers((prev) => prev.filter((w) => w.id !== newWhisper.id));
-        }, 4000);
+        }, 4500);
       }
     }
   }, [triggerQuote, muted]);
 
-  // Ambient whispers
   useEffect(() => {
     if (!autoWhisper || muted) return;
 
     const interval = setInterval(() => {
-      if (Math.random() > 0.4) {
+      if (Math.random() > 0.5) {
         const keys = Object.keys(VOICE_QUOTES);
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
         const quoteInfo = VOICE_QUOTES[randomKey];
@@ -153,29 +132,28 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
           id: Date.now(),
           text: quoteInfo.text,
           whisper: quoteInfo.whisper,
-          style: { ...quoteInfo.style, opacity: 0.65 },
-          x: Math.random() * 70 + 15,
-          y: Math.random() * 70 + 15,
+          style: { ...quoteInfo.style, opacity: 0.6 },
+          x: Math.random() * 60 + 20,
+          y: Math.random() * 60 + 20,
         };
 
-        setWhispers((prev) => [newWhisper, ...prev].slice(0, 4));
+        setWhispers((prev) => [newWhisper, ...prev].slice(0, 3));
 
-        speakText(quoteInfo.text, "robot");
+        speakText(quoteInfo.text, "grave");
 
         setTimeout(() => {
           setWhispers((prev) => prev.filter((w) => w.id !== newWhisper.id));
-        }, 3500);
+        }, 4000);
       }
-    }, 12000);
+    }, 15000);
 
     return () => clearInterval(interval);
   }, [autoWhisper, muted]);
 
   return (
     <div className="council-voices-hud">
-      {/* Visual audio wave visualizer */}
       <div className={`voice-visualizer ${isSpeaking ? "active" : ""}`}>
-        <Activity size={16} className="wave-icon" />
+        <Activity size={15} className="wave-icon" />
         <div className="waves">
           <span className="wave-bar bar-1"></span>
           <span className="wave-bar bar-2"></span>
@@ -190,11 +168,10 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
         className={`audio-toggle-btn ${muted ? "muted" : "active"}`}
         title={muted ? "Activar Voces" : "Silenciar Voces"}
       >
-        {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
-        <span>{muted ? "MORTALES MUDOS" : "EL CONSEJO HABLA"}</span>
+        {muted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+        <span>{muted ? "TRIBUNAL SILENCIADO" : "DECRETOS DEL TRIBUNAL"}</span>
       </button>
 
-      {/* Pop-up whispers overlays */}
       <div className="whispers-overlay-container">
         {whispers.map((w) => (
           <div
