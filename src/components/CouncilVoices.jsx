@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Volume2, VolumeX, Activity } from "lucide-react";
 import "./CouncilVoices.css";
 
-// Predefined voices phrases - Solemn & Authoritative Tribunal Tone
 export const VOICE_QUOTES = {
   prohibido: {
     text: "Prohibido.",
@@ -12,7 +11,7 @@ export const VOICE_QUOTES = {
   permitido: {
     text: "Permitido.",
     whisper: "Se autoriza la existencia temporal en la materia.",
-    style: { color: "#d8b878", textShadow: "0 0 10px rgba(216, 184, 120, 0.6)", fontFamily: "'Cinzel', serif" }
+    style: { color: "#ffd700", textShadow: "0 0 10px rgba(255, 215, 0, 0.6)", fontFamily: "'Cinzel', serif" }
   },
   destruyelos: {
     text: "Destrúyelos a todos, Romel.",
@@ -30,10 +29,40 @@ export const VOICE_QUOTES = {
     style: { color: "#4a9ebb", textShadow: "0 0 10px rgba(74, 158, 187, 0.6)" }
   },
   dios_sin_rezos: {
-    text: "Un dios al que nadie rige.",
+    text: "Un dios al que nadie reza.",
     whisper: "Silencio absoluto en el templo de Virgo.",
     style: { color: "#9da5b4", textShadow: "0 0 10px rgba(157, 165, 180, 0.6)" }
-  }
+  },
+  delta_dirac: {
+    text: "δ(0) = ∞ !",
+    whisper: "La singularidad de Dirac consume tu existencia cuántica...",
+    style: { color: "#ffb347", textShadow: "0 0 18px rgba(255, 179, 71, 0.9)" }
+  },
+  cosmos_explosion: {
+    text: "EXPLOSIÓN DE COSMOS!",
+    whisper: "Tu séptimo sentido es polvo cósmico ante Romel...",
+    style: { color: "#ffd700", textShadow: "0 0 22px rgba(255, 215, 0, 0.95)" }
+  },
+  shaka_whisper: {
+    text: "Om...",
+    whisper: "El tesoro del cielo juzga tu alma desde el Lost Canvas...",
+    style: { color: "#b886ff", textShadow: "0 0 14px rgba(184, 134, 255, 0.8)" }
+  },
+  madara_despierta: {
+    text: "DESPIERTA... A LA REALIDAD.",
+    whisper: "Solo la ilusión puede ser perfecta. Este mundo es un infierno.",
+    style: { color: "#cc0000", textShadow: "0 0 20px rgba(204, 0, 0, 0.9)", fontFamily: "'Cinzel', serif" }
+  },
+  tsukuyomi: {
+    text: "TSUKUYOMI INFINITO!",
+    whisper: "Todo mortal quedará atrapado en el sueño eterno de Madara.",
+    style: { color: "#8b0000", textShadow: "0 0 25px rgba(139, 0, 0, 0.95)", fontFamily: "'Cinzel', serif" }
+  },
+  schizo_risa: {
+    text: "JAJAJAJAJA!",
+    whisper: "Las voces me dicen que tu entropía es ridículamente baja...",
+    style: { color: "#ff6b9d", textShadow: "0 0 15px rgba(255, 107, 157, 0.8)" }
+  },
 };
 
 let speechCallbacks = { onStart: () => {}, onEnd: () => {} };
@@ -60,14 +89,12 @@ export function speakText(text, preset = "grave", customPitch = null, customRate
     utterance.voice = spanishVoice;
   }
 
-  // Serious, grave, solemn default parameters
   if (customPitch !== null && customRate !== null) {
     utterance.pitch = parseFloat(customPitch);
     utterance.rate = parseFloat(customRate);
   } else {
-    // Serious presets
-    utterance.pitch = 0.38; // Low grave tone
-    utterance.rate = 0.82;  // Slow authoritative pace
+    utterance.pitch = 0.38;
+    utterance.rate = 0.82;
   }
 
   utterance.onstart = () => {
@@ -106,15 +133,17 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
           text: quoteInfo.text,
           whisper: quoteInfo.whisper,
           style: quoteInfo.style,
-          x: Math.random() * 50 + 25,
-          y: Math.random() * 50 + 25,
+          x: Math.random() * 85 + 5,
+          y: Math.random() * 80 + 5,
+          rotate: (Math.random() - 0.5) * 30,
+          scale: Math.random() * 0.5 + 0.7,
         };
 
-        setWhispers((prev) => [newWhisper, ...prev].slice(0, 4));
+        setWhispers((prev) => [newWhisper, ...prev].slice(0, 8));
 
         setTimeout(() => {
           setWhispers((prev) => prev.filter((w) => w.id !== newWhisper.id));
-        }, 4500);
+        }, 3500);
       }
     }
   }, [triggerQuote, muted]);
@@ -122,32 +151,49 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
   useEffect(() => {
     if (!autoWhisper || muted) return;
 
-    const interval = setInterval(() => {
-      if (Math.random() > 0.5) {
-        const keys = Object.keys(VOICE_QUOTES);
-        const randomKey = keys[Math.floor(Math.random() * keys.length)];
-        const quoteInfo = VOICE_QUOTES[randomKey];
+    const scheduleNext = () => {
+      const delay = Math.random() * 8000 + 7000;
+      return setTimeout(() => {
+        const burst = Math.random() > 0.75 ? 2 : 1;
 
-        const newWhisper = {
-          id: Date.now(),
-          text: quoteInfo.text,
-          whisper: quoteInfo.whisper,
-          style: { ...quoteInfo.style, opacity: 0.6 },
-          x: Math.random() * 60 + 20,
-          y: Math.random() * 60 + 20,
+        const createWhisper = () => {
+          const keys = Object.keys(VOICE_QUOTES);
+          const randomKey = keys[Math.floor(Math.random() * keys.length)];
+          const quoteInfo = VOICE_QUOTES[randomKey];
+
+          const newWhisper = {
+            id: Date.now() + Math.random(),
+            text: quoteInfo.text,
+            whisper: quoteInfo.whisper,
+            style: { ...quoteInfo.style, opacity: 0.7 },
+            x: Math.random() * 85 + 5,
+            y: Math.random() * 80 + 5,
+            rotate: (Math.random() - 0.5) * 40,
+            scale: Math.random() * 0.6 + 0.6,
+          };
+
+          setWhispers((prev) => [newWhisper, ...prev].slice(0, 5));
+
+          if (Math.random() > 0.5) {
+            speakText(quoteInfo.text, "grave");
+          }
+
+          setTimeout(() => {
+            setWhispers((prev) => prev.filter((w) => w.id !== newWhisper.id));
+          }, 3500);
         };
 
-        setWhispers((prev) => [newWhisper, ...prev].slice(0, 3));
+        createWhisper();
+        if (burst === 2) {
+          setTimeout(createWhisper, Math.random() * 500 + 200);
+        }
 
-        speakText(quoteInfo.text, "grave");
+        scheduleNext();
+      }, delay);
+    };
 
-        setTimeout(() => {
-          setWhispers((prev) => prev.filter((w) => w.id !== newWhisper.id));
-        }, 4000);
-      }
-    }, 15000);
-
-    return () => clearInterval(interval);
+    const timer = scheduleNext();
+    return () => clearTimeout(timer);
   }, [autoWhisper, muted]);
 
   return (
@@ -160,11 +206,13 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
           <span className="wave-bar bar-3"></span>
           <span className="wave-bar bar-4"></span>
           <span className="wave-bar bar-5"></span>
+          <span className="wave-bar bar-6"></span>
+          <span className="wave-bar bar-7"></span>
         </div>
       </div>
 
-      <button 
-        onClick={() => setMuted(!muted)} 
+      <button
+        onClick={() => setMuted(!muted)}
         className={`audio-toggle-btn ${muted ? "muted" : "active"}`}
         title={muted ? "Activar Voces" : "Silenciar Voces"}
       >
@@ -173,20 +221,24 @@ export default function CouncilVoices({ triggerQuote, autoWhisper = true }) {
       </button>
 
       <div className="whispers-overlay-container">
-        {whispers.map((w) => (
-          <div
-            key={w.id}
-            className="whisper-bubble"
-            style={{
-              left: `${w.x}%`,
-              top: `${w.y}%`,
-              ...w.style
-            }}
-          >
-            <div className="whisper-title">{w.text}</div>
-            <div className="whisper-sub">"{w.whisper}"</div>
-          </div>
-        ))}
+        {whispers.map((w, idx) => {
+          const chaosClass = idx % 3 === 0 ? "chaos-a" : idx % 3 === 1 ? "chaos-b" : "chaos-c";
+          return (
+            <div
+              key={w.id}
+              className={`whisper-bubble ${chaosClass}`}
+              style={{
+                left: `${w.x}%`,
+                top: `${w.y}%`,
+                ...w.style,
+                animationDelay: `${idx * 0.03}s`,
+              }}
+            >
+              <div className="whisper-title">{w.text}</div>
+              <div className="whisper-sub">"{w.whisper}"</div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

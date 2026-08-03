@@ -69,11 +69,11 @@ export default function App() {
 
   return (
     <div className="app-root">
-      {/* 🌌 Animated Physical-Astral Background */}
+      {/* 🌌 Animated Physical-Mental Background */}
       <MathBackground />
 
       {/* 🔊 Schizophrenic Council Whispers (TTS + Text Pop-ups) */}
-      <CouncilVoices triggerQuote={triggerQuote} autoWhisper={view !== "admin"} />
+      <CouncilVoices triggerQuote={triggerQuote} autoWhisper={true} />
 
       {/* 🧭 Dynamic Route Views */}
       <main className="app-main-content">

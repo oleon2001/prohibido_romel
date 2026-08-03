@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Search, KeyRound, Compass, Sparkles } from "lucide-react";
+import { Search, KeyRound, Compass, Sparkles, Eye, EyeOff } from "lucide-react";
 import "./MainPortal.css";
 
 export default function MainPortal({ setView, setJudgmentId }) {
   const [searchId, setSearchId] = useState("");
   const [adminKey, setAdminKey] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -29,9 +30,9 @@ export default function MainPortal({ setView, setJudgmentId }) {
   return (
     <div className="portal-container">
       <div className="portal-header">
-        <div className="astral-title-container">
+        <div className="mental-title-container">
           <Sparkles className="title-icon" size={24} />
-          <h1 className="portal-title">EL CONSEJO ASTRAL</h1>
+          <h1 className="portal-title">EL CONSEJO MENTAL</h1>
           <Sparkles className="title-icon" size={24} />
         </div>
         <p className="portal-subtitle">
@@ -39,7 +40,6 @@ export default function MainPortal({ setView, setJudgmentId }) {
         </p>
       </div>
 
-      {/* Main Glowing Portal Orb */}
       <div className="portal-orb-container">
         <div className="portal-orb">
           <div className="orb-core"></div>
@@ -50,7 +50,6 @@ export default function MainPortal({ setView, setJudgmentId }) {
       </div>
 
       <div className="portal-actions">
-        {/* Search for Judgment ID */}
         <form onSubmit={handleSearch} className="portal-form glass-card">
           <h3 className="form-title">
             <Compass size={18} /> ¿Tienes un código de sentencia?
@@ -69,19 +68,26 @@ export default function MainPortal({ setView, setJudgmentId }) {
           </div>
         </form>
 
-        {/* Secret Admin Access */}
         <form onSubmit={handleAdminAccess} className="portal-form glass-card">
           <h3 className="form-title">
             <KeyRound size={18} /> Consola del Creador (Romel)
           </h3>
-          <div className="input-group">
+          <div className="input-group input-group-password">
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Palabra Clave Divina"
               value={adminKey}
               onChange={(e) => setAdminKey(e.target.value)}
               className="portal-input"
             />
+            <button
+              type="button"
+              className="portal-btn toggle-pass-btn"
+              onClick={() => setShowPassword(!showPassword)}
+              title={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
             <button type="submit" className="portal-btn admin-btn">
               Entrar
             </button>

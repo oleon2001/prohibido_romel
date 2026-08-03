@@ -7,7 +7,7 @@
   z-index: 20;
 }
 
-.astral-card {
+.mental-card {
   width: 100%;
   height: 100%;
   border-radius: 10px;
@@ -24,20 +24,18 @@
   background-color: #0b0d13;
 }
 
-/* Card Glow Themes - Refined Metallic & Deep Crimson */
-.astral-card.prohibited-theme {
+.mental-card.prohibited-theme {
   border: 3px solid #c93b3b;
   box-shadow: 0 0 25px rgba(201, 59, 59, 0.25), inset 0 0 15px rgba(201, 59, 59, 0.15);
   background: linear-gradient(180deg, #18090b 0%, #0a0405 100%);
 }
 
-.astral-card.permitted-theme {
-  border: 3px solid #d8b878;
-  box-shadow: 0 0 25px rgba(216, 184, 120, 0.25), inset 0 0 15px rgba(216, 184, 120, 0.15);
+.mental-card.permitted-theme {
+  border: 3px solid var(--accent-goldenrod);
+  box-shadow: 0 0 25px rgba(218, 165, 32, 0.25), inset 0 0 15px rgba(218, 165, 32, 0.15);
   background: linear-gradient(180deg, #14120c 0%, #080705 100%);
 }
 
-/* Elegant Sheen Overlay (Subtle Metallic Foil) */
 .card-holo-foil {
   position: absolute;
   top: 0;
@@ -49,17 +47,16 @@
   z-index: 4;
   background-image: linear-gradient(
     115deg,
-    rgba(216, 184, 120, 0.18) 0%,
+    rgba(218, 165, 32, 0.2) 0%,
     rgba(255, 255, 255, 0.08) 35%,
     rgba(201, 59, 59, 0.15) 70%,
-    rgba(216, 184, 120, 0.18) 100%
+    rgba(218, 165, 32, 0.22) 100%
   );
   background-size: 180% 180%;
   mix-blend-mode: color-dodge;
   transition: opacity 0.4s ease;
 }
 
-/* Gloss Lens Overlay */
 .card-shine {
   position: absolute;
   top: 0;
@@ -87,7 +84,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1.5px solid rgba(200, 170, 110, 0.25);
+  border-bottom: 1.5px solid rgba(218, 165, 32, 0.3);
   padding-bottom: 5px;
   z-index: 2;
 }
@@ -124,9 +121,9 @@
 }
 
 .attr-permitted {
-  background: rgba(216, 184, 120, 0.15);
-  color: var(--accent-gold);
-  border: 1px solid rgba(216, 184, 120, 0.5);
+  background: rgba(218, 165, 32, 0.15);
+  color: var(--accent-goldenrod);
+  border: 1px solid rgba(218, 165, 32, 0.5);
 }
 
 /* Levels */
@@ -139,8 +136,8 @@
 }
 
 .star-icon {
-  color: var(--accent-gold);
-  filter: drop-shadow(0 0 3px rgba(216, 184, 120, 0.5));
+  color: var(--accent-gold-bright);
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
 }
 
 .level-label {
@@ -154,7 +151,7 @@
   position: relative;
   width: 100%;
   height: 180px;
-  border: 1px solid rgba(200, 170, 110, 0.3);
+  border: 1px solid rgba(218, 165, 32, 0.35);
   background: #000;
   overflow: hidden;
   box-sizing: border-box;
@@ -166,7 +163,7 @@
 }
 
 .permitted-theme .card-image-box {
-  border-color: rgba(216, 184, 120, 0.4);
+  border-color: rgba(218, 165, 32, 0.45);
 }
 
 .card-img {
@@ -176,7 +173,7 @@
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.astral-card:hover .card-img {
+.mental-card:hover .card-img {
   transform: scale(1.04);
 }
 
@@ -190,7 +187,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(216, 184, 120, 0.4);
+  border: 1px solid rgba(218, 165, 32, 0.5);
 }
 
 .holo-seal.proh {
@@ -199,13 +196,13 @@
 }
 
 .holo-seal.perm {
-  background: rgba(216, 184, 120, 0.3);
-  color: var(--accent-gold);
+  background: rgba(218, 165, 32, 0.35);
+  color: var(--accent-goldenrod);
 }
 
 /* Card Body */
 .card-body {
-  border: 1px solid rgba(200, 170, 110, 0.15);
+  border: 1px solid rgba(218, 165, 32, 0.18);
   background: rgba(12, 14, 22, 0.85);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -223,10 +220,10 @@
   font-family: var(--font-heading);
   font-size: 0.62rem;
   font-weight: 600;
-  color: var(--accent-gold);
+  color: var(--accent-goldenrod);
   letter-spacing: 1px;
   margin-bottom: 4px;
-  border-bottom: 1px solid rgba(200, 170, 110, 0.12);
+  border-bottom: 1px solid rgba(218, 165, 32, 0.15);
   padding-bottom: 2px;
 }
 
@@ -250,14 +247,14 @@
 }
 
 .permitted-theme .card-description em {
-  color: var(--accent-gold);
+  color: var(--accent-goldenrod);
 }
 
 /* Stats Bar */
 .card-stats {
   display: flex;
   justify-content: space-between;
-  border-top: 1px solid rgba(200, 170, 110, 0.15);
+  border-top: 1px solid rgba(218, 165, 32, 0.18);
   padding-top: 4px;
   margin-top: 5px;
 }
@@ -282,10 +279,10 @@
 }
 
 .permitted-theme .stat-val {
-  color: var(--accent-gold);
+  color: var(--accent-goldenrod);
 }
 
-/* Digivolve animation screen overlay */
+/* Digivolution overlay (refined) */
 .digivolve-overlay {
   position: absolute;
   top: 0;
@@ -310,28 +307,41 @@
   opacity: 0.4;
 }
 
-.ring-1 {
-  width: 200px;
-  height: 200px;
-  border-color: var(--accent-gold);
+.ring-1 { width: 200px; height: 200px; border-color: var(--accent-goldenrod); }
+.ring-2 { width: 140px; height: 140px; border-color: var(--accent-crimson); animation-direction: reverse; }
+.ring-3 { width: 80px; height: 80px; border-color: var(--accent-cyan-subtle); }
+
+.digi-data-streams {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.ring-2 {
-  width: 140px;
-  height: 140px;
-  border-color: var(--accent-crimson);
-  animation-direction: reverse;
+.digi-stream {
+  position: absolute;
+  width: 1.5px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--accent-cyan-subtle), transparent);
+  animation: dataStreamFall 1.8s infinite linear;
+  opacity: 0.4;
 }
 
-.ring-3 {
-  width: 80px;
-  height: 80px;
-  border-color: var(--accent-cyan-subtle);
+.ds1 { left: 30%; animation-delay: 0s; }
+.ds2 { left: 55%; animation-delay: 0.6s; }
+.ds3 { left: 75%; animation-delay: 1.2s; }
+
+@keyframes dataStreamFall {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
 }
 
 .digi-text {
   font-family: var(--font-mono);
-  color: var(--accent-gold);
+  color: var(--accent-goldenrod);
   font-size: 0.7rem;
   margin-top: 220px;
   letter-spacing: 2px;
@@ -347,4 +357,67 @@
 @keyframes pulseText {
   0% { opacity: 0.4; }
   100% { opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .card-container {
+    width: 260px;
+    height: 390px;
+  }
+  .card-image-box {
+    height: 140px;
+  }
+  .card-title {
+    font-size: 0.72rem;
+    max-width: 130px;
+  }
+  .card-attribute {
+    font-size: 0.55rem;
+    padding: 1px 5px;
+  }
+  .level-label {
+    font-size: 0.58rem;
+  }
+  .card-body {
+    padding: 6px 8px;
+  }
+  .card-type {
+    font-size: 0.55rem;
+  }
+  .card-description {
+    font-size: 0.63rem;
+  }
+  .stat-item {
+    font-size: 0.65rem;
+  }
+  .digi-text {
+    font-size: 0.6rem;
+    margin-top: 170px;
+  }
+  .ring-1 { width: 150px; height: 150px; }
+  .ring-2 { width: 110px; height: 110px; }
+  .ring-3 { width: 65px; height: 65px; }
+}
+
+@media (max-width: 360px) {
+  .card-container {
+    width: 230px;
+    height: 340px;
+  }
+  .card-image-box {
+    height: 115px;
+  }
+  .card-title {
+    font-size: 0.65rem;
+    max-width: 110px;
+  }
+  .card-body {
+    padding: 4px 6px;
+  }
+  .card-description {
+    font-size: 0.58rem;
+  }
+  .stat-item {
+    font-size: 0.6rem;
+  }
 }

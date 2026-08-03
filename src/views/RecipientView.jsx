@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getJudgment, saveJudgment } from "../services/store";
-import AstralCard from "../components/AstralCard";
-import { speakText, VOICE_QUOTES } from "../components/CouncilVoices";
-import { ArrowLeft, Send, Sparkles, AlertTriangle, RefreshCw, Eye } from "lucide-react";
+import MentalCard from "../components/MentalCard";
+import { speakText } from "../components/CouncilVoices";
+import { ArrowLeft, Send, Sparkles, AlertTriangle, RefreshCw, Eye, Share } from "lucide-react";
 import "./RecipientView.css";
 
 export default function RecipientView({ judgmentId, setView }) {
@@ -22,7 +22,7 @@ export default function RecipientView({ judgmentId, setView }) {
         setJudgment(data);
         setError(null);
       } else {
-        setError("La clave de sentencia no existe en el registro astral.");
+        setError("La clave de sentencia no existe en el registro mental.");
       }
     } catch (e) {
       console.error(e);
@@ -94,6 +94,12 @@ export default function RecipientView({ judgmentId, setView }) {
     }
   };
 
+  const shareAppealWhatsApp = () => {
+    const shareUrl = `${window.location.origin}${window.location.pathname}?id=${judgmentId}`;
+    const msg = encodeURIComponent(`📜 MI SENTENCIA MENTAL 📜\n\n⚡ ${judgment.name}\nSentencia: ${judgment.status.toUpperCase()}\nF: ${judgment.fCategory || 1}\n\nApelación:\n"${judgment.appeal}"\n\nLink: ${shareUrl}`);
+    window.open(`https://wa.me/?text=${msg}`, '_blank');
+  };
+
   if (loading) {
     return (
       <div className="recipient-loading">
@@ -156,7 +162,7 @@ export default function RecipientView({ judgmentId, setView }) {
         </div>
         <h2 className="gate-title">DECRETO DIVINO PENDIENTE</h2>
         <p className="gate-desc">
-          El Creador Romel ha sellado tu destino molecular en la red de kvdb.io.
+          El Creador Romel ha sellado tu destino molecular en la nube cuántica.
           Prepárate para cruzar el Lost Canvas de Virgo Shaka y escuchar las voces del consejo.
         </p>
         <button onClick={handleUnlockAndEnter} className="gate-unlock-btn">
@@ -186,7 +192,11 @@ export default function RecipientView({ judgmentId, setView }) {
           )}
         </div>
 
-        <AstralCard judgment={judgment} />
+        <MentalCard judgment={judgment} />
+
+        <button onClick={shareAppealWhatsApp} className="share-whatsapp-card-btn">
+          <Share size={16} /> Compartir Sentencia por WhatsApp
+        </button>
       </div>
 
       {/* Appeal Form Section */}
@@ -206,6 +216,9 @@ export default function RecipientView({ judgmentId, setView }) {
               <span className="pulse-dot"></span>
               <span>Esperando que el Creador Romel reevalúe tu destino en vivo...</span>
             </div>
+            <button onClick={shareAppealWhatsApp} className="send-appeal-btn" style={{ marginTop: '12px', background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)' }}>
+              <Share size={16} /> Compartir por WhatsApp
+            </button>
           </div>
         ) : (
           <form onSubmit={handleAppealSubmit} className="appeal-form">

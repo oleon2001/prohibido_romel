@@ -21,6 +21,28 @@
   --text-primary: #f0ede6;
   --text-secondary: #9da5b4;
   --text-muted: #626975;
+
+  /* Zodiac Golden & Parchment */
+  --accent-goldenrod: #daa520;
+  --accent-gold-bright: #ffd700;
+  --accent-gold-amber: #ffb347;
+  --bg-parchment-dark: rgba(22, 16, 6, 0.82);
+  --bg-parchment-med: rgba(28, 20, 8, 0.72);
+  --bg-parchment-border: rgba(218, 165, 32, 0.28);
+  --bg-scroll-edge: rgba(30, 20, 5, 0.9);
+
+  /* Madara Uchiha */
+  --madara-crimson: #8b0000;
+  --madara-red: #cc0000;
+  --madara-purple: #5b2c8e;
+  --madara-black: #0a0505;
+  --madara-red-glow: rgba(139, 0, 0, 0.35);
+
+  /* Council & Schizo */
+  --accent-purple-council: #b886ff;
+  --accent-cyan-terminal: #00e5ff;
+  --accent-dirac: #ffb347;
+  --text-schizo: #ff6b9d;
 }
 
 body {
@@ -58,10 +80,23 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(200, 170, 110, 0.25);
+  background: rgba(218, 165, 32, 0.35);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 170, 110, 0.5);
+  background: rgba(218, 165, 32, 0.6);
+}
+
+@media (max-width: 480px) {
+  body {
+    -webkit-tap-highlight-color: rgba(218, 165, 32, 0.15);
+  }
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(218, 165, 32, 0.2);
+    border-radius: 2px;
+  }
 }
