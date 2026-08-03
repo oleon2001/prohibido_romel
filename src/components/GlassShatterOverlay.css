@@ -1,0 +1,114 @@
+.shatter-container {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.shatter-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.9) 0%, rgba(255, 255, 255, 1) 40%, rgba(168, 120, 216, 0.8) 100%);
+  animation: flashFade 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+}
+
+.shatter-shockwave {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 215, 0, 0.9);
+  box-shadow: 0 0 40px #ffd700, inset 0 0 30px #a878d8;
+  animation: expandShockwave 1.4s cubic-bezier(0.05, 0.7, 0.1, 1) forwards;
+}
+
+.shatter-text-banner {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  animation: bannerPop 2.2s ease-out forwards;
+}
+
+.shatter-sub {
+  display: block;
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+  color: #ff3366;
+  text-transform: uppercase;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(255, 51, 102, 0.8);
+}
+
+.shatter-main {
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, #ffffff 0%, #ffd700 50%, #ff8c00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+  margin: 8px 0;
+  text-transform: uppercase;
+}
+
+.shatter-sub-gold {
+  display: block;
+  font-size: 0.9rem;
+  letter-spacing: 3px;
+  color: #00ffcc;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(0, 255, 204, 0.8);
+}
+
+.shards-wrapper {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.glass-shard {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 215, 0, 0.4));
+  clip-path: polygon(50% 0%, 100% 100%, 0% 80%);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  animation: shardExplode 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+@keyframes flashFade {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes expandShockwave {
+  0% { transform: scale(0.1); opacity: 1; border-width: 8px; }
+  100% { transform: scale(25); opacity: 0; border-width: 1px; }
+}
+
+@keyframes bannerPop {
+  0% { transform: scale(0.5); opacity: 0; filter: blur(10px); }
+  20% { transform: scale(1.1); opacity: 1; filter: blur(0); }
+  80% { transform: scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: scale(1.05); opacity: 0; filter: blur(8px); }
+}
+
+@keyframes shardExplode {
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(var(--scale));
+    opacity: 0;
+  }
+}

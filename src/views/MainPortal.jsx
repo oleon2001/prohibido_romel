@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Search, KeyRound, Compass, Sparkles, Eye, EyeOff } from "lucide-react";
+import AstralWall from "../components/AstralWall";
 import "./MainPortal.css";
 
 export default function MainPortal({ setView, setJudgmentId }) {
@@ -25,6 +26,11 @@ export default function MainPortal({ setView, setJudgmentId }) {
       setErrorMsg("El Consejo no reconoce esa frecuencia vibracional.");
       setTimeout(() => setErrorMsg(""), 3000);
     }
+  };
+
+  const handleSelectFromWall = (id) => {
+    setJudgmentId(id);
+    setView("recipient");
   };
 
   return (
@@ -95,6 +101,9 @@ export default function MainPortal({ setView, setJudgmentId }) {
           {errorMsg && <div className="error-text">{errorMsg}</div>}
         </form>
       </div>
+
+      {/* 📜 Muro Astral del Lost Canvas */}
+      <AstralWall onSelectJudgment={handleSelectFromWall} />
 
       <div className="portal-footer">
         <span>SUCIOS MORTALES · SHAKA DE VIRGO · VERCEL READY</span>

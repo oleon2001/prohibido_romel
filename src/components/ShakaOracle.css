@@ -1,0 +1,115 @@
+.glass-panel-oracle {
+  background: rgba(18, 12, 28, 0.88);
+  border: 1px solid rgba(218, 165, 32, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 120, 216, 0.2);
+  margin-bottom: 24px;
+}
+
+.oracle-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.oracle-icon-glow {
+  color: var(--accent-gold-bright);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.7));
+}
+
+.oracle-title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--accent-gold-bright);
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.oracle-wheel-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.oracle-rosario-wheel {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px dashed rgba(218, 165, 32, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 2s cubic-bezier(0.15, 0.85, 0.35, 1.2);
+}
+
+.rosario-bead {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -8px;
+  margin-left: -8px;
+}
+
+.bead-core {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd700, #8b0000);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+}
+
+.wheel-center-seal {
+  font-size: 1.8rem;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+}
+
+.spin-oracle-btn {
+  background: linear-gradient(135deg, rgba(218, 165, 32, 0.3), rgba(168, 120, 216, 0.4));
+  border: 1px solid var(--accent-gold-bright);
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.spin-oracle-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.oracle-quote-box {
+  margin-top: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 3px solid var(--accent-gold-bright);
+  padding: 10px 14px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.quote-speaker-icon {
+  color: var(--accent-gold-bright);
+}
+
+.oracle-quote-text {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-style: italic;
+  color: #fff;
+  margin: 0;
+}

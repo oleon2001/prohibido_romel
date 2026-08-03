@@ -7,6 +7,52 @@ export function generateId() {
   return Math.random().toString(36).substring(2, 11);
 }
 
+export function encodeJudgmentToUrl(judgment) {
+  if (!judgment) return "";
+  try {
+    const minified = {
+      n: judgment.name,
+      s: judgment.status,
+      q: judgment.voiceQuote,
+      e: judgment.entropy,
+      w: judgment.divineWill,
+      f: judgment.fCategory,
+      p: judgment.voicePitch,
+      r: judgment.voiceRate,
+      d: judgment.creationDate,
+    };
+    return encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(minified)))));
+  } catch (e) {
+    console.warn("Could not encode judgment to URL payload:", e);
+    return "";
+  }
+}
+
+export function decodeJudgmentFromUrl(encodedStr, id) {
+  if (!encodedStr) return null;
+  try {
+    const jsonStr = decodeURIComponent(escape(atob(decodeURIComponent(encodedStr))));
+    const m = JSON.parse(jsonStr);
+    return {
+      id: id || "decreto_url",
+      name: m.n || "Mortal",
+      status: m.s || "prohibido",
+      voiceQuote: m.q || "",
+      entropy: m.e || 9999,
+      divineWill: m.w || "0",
+      fCategory: m.f || 1,
+      voicePitch: m.p || 0.45,
+      voiceRate: m.r || 0.8,
+      creationDate: m.d || new Date().toISOString(),
+      appeal: "",
+      appealSubmitted: false,
+    };
+  } catch (e) {
+    console.warn("Could not decode judgment from URL payload:", e);
+    return null;
+  }
+}
+
 function getLocalMap() {
   if (typeof localStorage === "undefined") return {};
   try {
@@ -34,10 +80,12 @@ function updateLocalCache(judgment) {
 
 export async function saveJudgment(judgment) {
   let savedJudgment = { ...judgment };
+  // Check if judgment ID is a local temporary ID or nonexistent
+  const isNew = !savedJudgment.id || savedJudgment.id.length > 20 || savedJudgment.id.includes("-");
 
   try {
-    // If judgment has an id, attempt updating (PUT) first
-    if (savedJudgment.id) {
+    // If it's an existing cloud ID (not new/temp), attempt PUT update
+    if (!isNew) {
       const putRes = await fetch(`${JSONBLOB_API}/${savedJudgment.id}`, {
         method: "PUT",
         headers: {
@@ -53,41 +101,59 @@ export async function saveJudgment(judgment) {
       }
     }
 
-    // If PUT fails or if it's a brand new judgment without cloud blob, create via POST
+    // Otherwise POST to create new cloud blob
+    const payload = { ...savedJudgment };
+    if (isNew) delete payload.id;
+
     const postRes = await fetch(JSONBLOB_API, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
       },
-      body: JSON.stringify(savedJudgment),
+      body: JSON.stringify(payload),
     });
 
     if (postRes.ok) {
-      const location = postRes.headers.get("location") || postRes.headers.get("Location");
-      if (location) {
-        const cloudBlobId = location.split("/").pop();
+      const cloudBlobId =
+        postRes.headers.get("x-jsonblob-id") ||
+        postRes.headers.get("X-jsonblob-id") ||
+        (postRes.headers.get("location") || "").split("/").pop() ||
+        (postRes.headers.get("Location") || "").split("/").pop();
+
+      if (cloudBlobId) {
         savedJudgment.id = cloudBlobId;
+        // Perform PUT to attach final ID to blob
+        await fetch(`${JSONBLOB_API}/${cloudBlobId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+          body: JSON.stringify(savedJudgment),
+        });
       }
     } else {
-      console.warn("Failed to sync judgment to cloud storage. Status:", postRes.status);
+      console.warn("Cloud storage sync returned status:", postRes.status);
     }
   } catch (error) {
-    console.error("Cloud storage sync failed, using localStorage fallback:", error);
+    console.error("Cloud storage sync failed, fallback to local storage:", error);
   }
 
   updateLocalCache(savedJudgment);
   return savedJudgment;
 }
 
-export async function getJudgment(id) {
-  if (!id) return null;
+export async function getJudgment(id, fallbackEncoded = null) {
+  let urlDecoded = decodeJudgmentFromUrl(fallbackEncoded, id);
+
+  if (!id) return urlDecoded;
 
   try {
     const response = await fetch(`${JSONBLOB_API}/${id}`, {
       headers: {
-        "Accept": "application/json"
-      }
+        "Accept": "application/json",
+      },
     });
     if (response.ok) {
       const data = await response.json();
@@ -95,11 +161,11 @@ export async function getJudgment(id) {
       return data;
     }
   } catch (error) {
-    console.error("Could not fetch from cloud, reading from local cache:", error);
+    console.error("Cloud fetch failed:", error);
   }
 
   const localJudgments = getLocalMap();
-  return localJudgments[id] || null;
+  return localJudgments[id] || urlDecoded || null;
 }
 
 export async function getAllLocalJudgments() {
@@ -111,7 +177,7 @@ export async function getAllLocalJudgments() {
       if (!j.id) return j;
       try {
         const response = await fetch(`${JSONBLOB_API}/${j.id}`, {
-          headers: { "Accept": "application/json" }
+          headers: { "Accept": "application/json" },
         });
         if (response.ok) {
           const freshData = await response.json();
@@ -127,7 +193,9 @@ export async function getAllLocalJudgments() {
 
   setLocalMap(localJudgmentsMap);
 
-  return updatedJudgments.sort((a, b) => new Date(b.creationDate || 0) - new Date(a.creationDate || 0));
+  return updatedJudgments.sort(
+    (a, b) => new Date(b.creationDate || 0) - new Date(a.creationDate || 0)
+  );
 }
 
 export async function deleteJudgment(id) {
@@ -145,3 +213,25 @@ export async function deleteJudgment(id) {
   }
 }
 
+export async function markJudgmentAsSeen(id) {
+  if (!id) return null;
+  try {
+    const judgment = await getJudgment(id);
+    if (!judgment) return null;
+
+    const wasSeenBefore = Boolean(judgment.seen);
+    const updated = {
+      ...judgment,
+      seen: true,
+      seenAt: judgment.seenAt || new Date().toISOString(),
+      viewCount: (judgment.viewCount || 0) + 1,
+      lastViewedAt: new Date().toISOString(),
+    };
+
+    await saveJudgment(updated);
+    return { judgment: updated, isFirstTime: !wasSeenBefore };
+  } catch (error) {
+    console.error("Could not mark judgment as seen:", error);
+    return null;
+  }
+}

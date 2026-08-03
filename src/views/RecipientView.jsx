@@ -1,24 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { getJudgment, saveJudgment } from "../services/store";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { getJudgment, saveJudgment, markJudgmentAsSeen } from "../services/store";
 import MentalCard from "../components/MentalCard";
+import GlassShatterOverlay from "../components/GlassShatterOverlay";
+import DivineCertificateModal from "../components/DivineCertificateModal";
 import { speakText } from "../components/CouncilVoices";
-import { ArrowLeft, Send, Sparkles, AlertTriangle, RefreshCw, Eye, Share } from "lucide-react";
+import { ArrowLeft, Send, Sparkles, AlertTriangle, RefreshCw, Eye, Share, Shield, Zap, Flame, Award } from "lucide-react";
 import "./RecipientView.css";
 
-export default function RecipientView({ judgmentId, setView }) {
+export default function RecipientView({ judgmentId, fallbackEncoded, setView }) {
   const [loading, setLoading] = useState(true);
   const [judgment, setJudgment] = useState(null);
   const [unlocked, setUnlocked] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [appealText, setAppealText] = useState("");
+  const [appealStance, setAppealStance] = useState("plegaria");
   const [submittingAppeal, setSubmittingAppeal] = useState(false);
+  const [shatterActive, setShatterActive] = useState(false);
+  const [showCertModal, setShowCertModal] = useState(false);
   const [error, setError] = useState(null);
 
+  const prevStatusRef = useRef(null);
+
   // Fetch judgment details
-  const fetchDetails = async () => {
+  const fetchDetails = useCallback(async () => {
     try {
-      const data = await getJudgment(judgmentId);
+      const data = await getJudgment(judgmentId, fallbackEncoded);
       if (data) {
+        // Detect real-time transformation from Prohibido to Permitido!
+        if (prevStatusRef.current === "prohibido" && data.status === "permitido") {
+          setShatterActive(true);
+          speakText("¡El sello divino ha sido roto! El Creador Romel ha reescrito tu destino a PERMITIDO.", null, data.voicePitch || 1, data.voiceRate || 1);
+        }
+
+        prevStatusRef.current = data.status;
         setJudgment(data);
         setError(null);
       } else {
@@ -30,11 +44,11 @@ export default function RecipientView({ judgmentId, setView }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [judgmentId, fallbackEncoded]);
 
   useEffect(() => {
     fetchDetails();
-  }, [judgmentId]);
+  }, [fetchDetails]);
 
   // Real-time polling to update recipient's view if Romel alters their destiny
   useEffect(() => {
@@ -43,32 +57,38 @@ export default function RecipientView({ judgmentId, setView }) {
       fetchDetails();
     }, 4000);
     return () => clearInterval(interval);
-  }, [judgmentId]);
+  }, [judgmentId, fetchDetails]);
 
-  // Handle entry gate and play transition
-  const handleUnlockAndEnter = () => {
+  // Handle entry gate, send telemetry, and play transition
+  const handleUnlockAndEnter = async () => {
     setIsTransitioning(true);
+
+    // Register telemetría de lectura (seen status)
+    markJudgmentAsSeen(judgmentId);
     
     if (judgment) {
       const pitch = judgment.voicePitch !== undefined ? judgment.voicePitch : 0.45;
       const rate = judgment.voiceRate !== undefined ? judgment.voiceRate : 0.8;
 
-      // Introductory sentence + quote using Romel's custom pitch and speed!
       const statusText = judgment.status === "prohibido" ? "PROHIBIDO" : "PERMITIDO";
       
       speakText(`Socio mortal... Has sido decretado como... ${statusText}.`, null, pitch, rate);
       
-      // Delay quote speech to coordinate with the opening of Shaka's eyes
       setTimeout(() => {
         speakText(judgment.voiceQuote || "Lo permito...", null, pitch, rate);
       }, 4000);
     }
 
-    // Complete transition and show card after 6 seconds (length of eye opening sequence)
     setTimeout(() => {
       setIsTransitioning(false);
       setUnlocked(true);
     }, 6000);
+  };
+
+  // Preset appeal stances
+  const applyPresetStance = (stanceKey, presetText) => {
+    setAppealStance(stanceKey);
+    setAppealText(presetText);
   };
 
   // Submit appeal
@@ -80,6 +100,7 @@ export default function RecipientView({ judgmentId, setView }) {
     const updated = {
       ...judgment,
       appeal: appealText.trim(),
+      appealStance,
       appealSubmitted: true,
     };
 
@@ -102,27 +123,27 @@ export default function RecipientView({ judgmentId, setView }) {
 
   if (loading) {
     return (
-      <div className="recipient-loading">
-        <RefreshCw className="spinner" size={48} />
-        <p>Invocando registros desde la biblioteca de Lost Canvas...</p>
+      <div className="loading-screen text-center">
+        <RefreshCw size={36} className="spin-icon text-gold" />
+        <p className="loading-text">Decodificando vector de entropía en el éter...</p>
       </div>
     );
   }
 
-  if (error) {
+  if (error || !judgment) {
     return (
-      <div className="recipient-error glass-panel-rec">
-        <AlertTriangle size={48} color="#ff3e3e" />
-        <h2>SENTENCIA EXTRAVIADA</h2>
-        <p>{error}</p>
-        <button onClick={() => setView("portal")} className="back-btn-rec">
-          <ArrowLeft size={16} /> Volver al Portal
+      <div className="error-screen text-center">
+        <AlertTriangle size={48} className="text-red" />
+        <h2 className="error-title">SENTENCIA EXTRAVIADA</h2>
+        <p className="error-desc">{error || "El registro mental ha expirado o no existe."}</p>
+        <button onClick={() => setView("portal")} className="btn-primary">
+          <ArrowLeft size={16} /> Regresar al Plano Ordinario
         </button>
       </div>
     );
   }
 
-  // Intermediate transition: Virgo Shaka abriendo los ojos
+  // Eye Transition Overlay: Virgo Shaka abriendo los ojos con estallido divino
   if (isTransitioning) {
     return (
       <div className="shaka-eyes-transition">
@@ -130,19 +151,22 @@ export default function RecipientView({ judgmentId, setView }) {
         <div className="shaka-mandala"></div>
         <div className="eyes-svg-wrapper">
           <svg viewBox="0 0 400 150" className="shaka-eyes-svg" xmlns="http://www.w3.org/2000/svg">
-            {/* Left Eye */}
-            <path d="M 50,75 Q 100,25 150,75 Q 100,125 50,75 Z" className="eye-back" />
-            <path d="M 50,75 Q 100,35 150,75" className="eye-lid-upper" />
-            <path d="M 50,75 Q 100,115 150,75" className="eye-lid-lower" />
-            <circle cx="100" cy="75" r="22" className="eye-pupil" />
-            <circle cx="100" cy="75" r="8" className="eye-pupil-core" />
-            
-            {/* Right Eye */}
-            <path d="M 250,75 Q 300,25 350,75 Q 300,125 250,75 Z" className="eye-back" />
-            <path d="M 250,75 Q 300,35 350,75" className="eye-lid-upper" />
-            <path d="M 250,75 Q 300,115 350,75" className="eye-lid-lower" />
-            <circle cx="300" cy="75" r="22" className="eye-pupil" />
-            <circle cx="300" cy="75" r="8" className="eye-pupil-core" />
+            <g>
+              {/* Left Eye */}
+              <path d="M 50,75 Q 100,25 150,75 Q 100,125 50,75 Z" className="eye-back" />
+              <path d="M 50,75 Q 100,35 150,75" className="eye-lid-upper" />
+              <path d="M 50,75 Q 100,115 150,75" className="eye-lid-lower" />
+              <circle cx="100" cy="75" r="22" className="eye-pupil" />
+              <circle cx="100" cy="75" r="8" className="eye-pupil-core" />
+            </g>
+            <g>
+              {/* Right Eye */}
+              <path d="M 250,75 Q 300,25 350,75 Q 300,125 250,75 Z" className="eye-back" />
+              <path d="M 250,75 Q 300,35 350,75" className="eye-lid-upper" />
+              <path d="M 250,75 Q 300,115 350,75" className="eye-lid-lower" />
+              <circle cx="300" cy="75" r="22" className="eye-pupil" />
+              <circle cx="300" cy="75" r="8" className="eye-pupil-core" />
+            </g>
           </svg>
         </div>
         <div className="shaka-speech-text">
@@ -177,6 +201,9 @@ export default function RecipientView({ judgmentId, setView }) {
 
   return (
     <div className="recipient-container">
+      {/* Real-time Glass Shatter transformation overlay */}
+      <GlassShatterOverlay active={shatterActive} onComplete={() => setShatterActive(false)} />
+
       {/* Back button */}
       <button onClick={() => setView("portal")} className="back-btn-rec-top">
         <ArrowLeft size={16} /> Salir del Portal
@@ -194,10 +221,23 @@ export default function RecipientView({ judgmentId, setView }) {
 
         <MentalCard judgment={judgment} />
 
+        {judgment.status === "permitido" && (
+          <button onClick={() => setShowCertModal(true)} className="view-cert-btn">
+            <Award size={16} /> VER SALVOCONDUCTO DIVINO DE REDENCIÓN
+          </button>
+        )}
+
         <button onClick={shareAppealWhatsApp} className="share-whatsapp-card-btn">
           <Share size={16} /> Compartir Sentencia por WhatsApp
         </button>
       </div>
+
+      {showCertModal && (
+        <DivineCertificateModal
+          judgment={judgment}
+          onClose={() => setShowCertModal(false)}
+        />
+      )}
 
       {/* Appeal Form Section */}
       <div className="appeal-form-container glass-panel-rec">
@@ -223,12 +263,36 @@ export default function RecipientView({ judgmentId, setView }) {
         ) : (
           <form onSubmit={handleAppealSubmit} className="appeal-form">
             <p className="appeal-instructions">
-              Si crees que tu entropía es incorrecta, viola el principio de incertidumbre de Heisenberg, 
-              o deseas apelar con la gracia de Virgo Shaka, escribe tu defensa cuántica:
+              Si crees que tu entropía es incorrecta o deseas apelar ante Virgo Shaka, elige una postura cuántica o escribe tu defensa:
             </p>
+
+            <div className="stance-selector-group">
+              <button
+                type="button"
+                className={`stance-btn ${appealStance === "plegaria" ? "active" : ""}`}
+                onClick={() => applyPresetStance("plegaria", "Oh Creador Romel, apelo a la clemencia de Virgo Shaka. He purificado mi cosmos.")}
+              >
+                <Shield size={13} /> Plegaria a Shaka
+              </button>
+              <button
+                type="button"
+                className={`stance-btn ${appealStance === "heisenberg" ? "active" : ""}`}
+                onClick={() => applyPresetStance("heisenberg", "Invoco el Principio de Incertidumbre: mi entropía local es indeterminada.")}
+              >
+                <Zap size={13} /> Incertidumbre Heisenberg
+              </button>
+              <button
+                type="button"
+                className={`stance-btn ${appealStance === "schrodinger" ? "active" : ""}`}
+                onClick={() => applyPresetStance("schrodinger", "Paradoja de Schrödinger: estoy simultáneamente Prohibido y Permitido.")}
+              >
+                <Flame size={13} /> Paradoja Schrödinger
+              </button>
+            </div>
+
             <textarea
               required
-              placeholder="Escribe tu contraargumentación aquí... (ej. Mi entropía local no ha aumentado, he completado mi Lost Canvas...)"
+              placeholder="Escribe tu contraargumentación aquí..."
               value={appealText}
               onChange={(e) => setAppealText(e.target.value)}
               className="appeal-textarea"

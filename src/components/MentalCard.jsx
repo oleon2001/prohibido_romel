@@ -1,16 +1,21 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, memo } from "react";
 import shakaCosmicImg from "../assets/shaka_cosmic.jpg";
-import { Ban, CheckCircle, Orbit, Trophy } from "lucide-react";
+import { Ban, CheckCircle, Orbit, Trophy, Download, Sparkles, Image as ImageIcon } from "lucide-react";
+import { toPng } from "html-to-image";
+import { playCosmicChime } from "../services/audioSynth";
 import "./MentalCard.css";
 
-export default function MentalCard({ judgment }) {
+function MentalCard({ judgment }) {
   const { name, status, entropy, divineWill, fCategory, voiceQuote } = judgment;
   const cardRef = useRef(null);
+  const containerRef = useRef(null);
   const [coords, setCoords] = useState({ rx: 0, ry: 0, px: 50, py: 50 });
   const [digivolving, setDigivolving] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
+    if (!cardRef.current || exporting) return;
     const card = cardRef.current;
     const box = card.getBoundingClientRect();
     const x = e.clientX - box.left;
@@ -34,11 +39,46 @@ export default function MentalCard({ judgment }) {
     return () => clearTimeout(timer);
   }, [status]);
 
+  const handleExportImage = async (format = "square") => {
+    if (!cardRef.current) return;
+    playCosmicChime();
+    setExporting(true);
+    setShowExportMenu(false);
+    setCoords({ rx: 0, ry: 0, px: 50, py: 50 });
+
+    try {
+      await new Promise((r) => setTimeout(r, 100));
+
+      const nodeToCapture = cardRef.current;
+      const dataUrl = await toPng(nodeToCapture, {
+        cacheBust: true,
+        quality: 0.95,
+        style: format === "story" ? {
+          transform: "none",
+          padding: "40px 20px",
+          background: "#070714",
+          borderRadius: "0px",
+        } : {
+          transform: "none"
+        }
+      });
+
+      const link = document.createElement("a");
+      link.download = `decreto_${name.toLowerCase().replace(/\s+/g, "_")}_${format}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Export image failed:", err);
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const isProhibited = status === "prohibido";
   const stars = Math.min(5, Math.max(1, fCategory || 1));
 
   return (
-    <div className="card-container">
+    <div className="card-container" ref={containerRef}>
       {digivolving && (
         <div className="digivolve-overlay">
           <div className="digi-ring ring-1"></div>
@@ -99,7 +139,7 @@ export default function MentalCard({ judgment }) {
         </div>
 
         <div className="card-image-box">
-          <img src={shakaCosmicImg} alt="Virgo Shaka" className="card-img" />
+          <img src={shakaCosmicImg} alt="Virgo Shaka" className="card-img" loading="lazy" />
           <div className="card-image-lens-flare"></div>
           <div className="card-image-border-glow"></div>
           <div className={`holo-seal ${isProhibited ? "proh" : "perm"}`}>
@@ -139,6 +179,36 @@ export default function MentalCard({ judgment }) {
           </div>
         </div>
       </div>
+
+      {/* Floating Export Action Bar */}
+      <div className="card-export-bar">
+        <div className="export-menu-wrapper">
+          <button
+            className="export-trigger-btn"
+            onClick={() => { playCosmicChime(); setShowExportMenu(!showExportMenu); }}
+            disabled={exporting}
+          >
+            <Download size={14} />
+            <span>{exporting ? "Generando HD..." : "DESCARGAR CARTA HD"}</span>
+          </button>
+
+          {showExportMenu && (
+            <div className="export-dropdown-menu">
+              <button onClick={() => handleExportImage("square")} className="export-menu-item">
+                <ImageIcon size={14} />
+                <span>Formato Carta Coleccionable (1:1)</span>
+              </button>
+              <button onClick={() => handleExportImage("story")} className="export-menu-item">
+                <Sparkles size={14} />
+                <span>Formato Historia Instagram (9:16)</span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
+
+export default memo(MentalCard);
+

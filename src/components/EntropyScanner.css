@@ -1,0 +1,237 @@
+.glass-panel-scan {
+  background: rgba(14, 10, 24, 0.9);
+  border: 1px solid rgba(218, 165, 32, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(218, 165, 32, 0.15);
+  margin-bottom: 24px;
+}
+
+.scanner-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.scanner-icon-glow {
+  color: var(--accent-cyan-terminal);
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.7));
+}
+
+.scanner-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--accent-gold-bright);
+  margin: 0;
+}
+
+.scanner-input-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.scanner-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(218, 165, 32, 0.3);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+.scanner-input:focus {
+  outline: none;
+  border-color: #00ffcc;
+  box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+}
+
+.scan-trigger-btn {
+  background: linear-gradient(135deg, var(--accent-goldenrod), var(--accent-purple-council));
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 0 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+.scan-random-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(218, 165, 32, 0.3);
+  border-radius: 6px;
+  color: var(--accent-gold-bright);
+  padding: 0 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.scan-random-btn:hover:not(:disabled) {
+  background: rgba(218, 165, 32, 0.25);
+  box-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
+}
+
+.apply-scan-to-form-btn {
+  margin-top: 12px;
+  width: 100%;
+  background: linear-gradient(135deg, rgba(0, 255, 204, 0.2), rgba(0, 229, 255, 0.3));
+  border: 1px solid #00ffcc;
+  border-radius: 6px;
+  color: #00ffcc;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.apply-scan-to-form-btn:hover {
+  background: rgba(0, 255, 204, 0.35);
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Laser Scanning Beam */
+.laser-box {
+  position: relative;
+  height: 90px;
+  background: #05040a;
+  border: 1px solid rgba(0, 255, 204, 0.3);
+  border-radius: 6px;
+  margin-top: 14px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.laser-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #00ffcc, #ffffff, #00ffcc, transparent);
+  box-shadow: 0 0 15px #00ffcc;
+  animation: laserScan 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes laserScan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(86px); }
+}
+
+.laser-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 255, 204, 0.15) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+.laser-status-txt {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #00ffcc;
+  letter-spacing: 2px;
+  z-index: 2;
+  animation: blinkText 0.8s infinite alternate;
+}
+
+/* Scan Result Card */
+.scan-result-card {
+  margin-top: 14px;
+  background: rgba(10, 12, 20, 0.8);
+  border-radius: 8px;
+  padding: 14px;
+  border: 1px solid;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.scan-result-card.prohibido {
+  border-color: rgba(255, 62, 62, 0.4);
+}
+
+.scan-result-card.permitido {
+  border-color: rgba(0, 255, 204, 0.4);
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.result-subject {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.result-status-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.result-status-badge.prohibido {
+  background: rgba(255, 62, 62, 0.2);
+  color: #ff3e3e;
+}
+
+.result-status-badge.permitido {
+  background: rgba(0, 255, 204, 0.2);
+  color: #00ffcc;
+}
+
+.result-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.metric-box {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.metric-lbl {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+.metric-val {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent-gold-bright);
+}

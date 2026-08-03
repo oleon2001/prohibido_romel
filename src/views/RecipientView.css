@@ -727,3 +727,44 @@
     padding: 8px 14px;
   }
 }
+
+/* Stance Selector Group */
+.stance-selector-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.stance-btn {
+  flex: 1;
+  min-width: 130px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(218, 165, 32, 0.25);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.stance-btn:hover {
+  background: rgba(218, 165, 32, 0.15);
+  border-color: rgba(218, 165, 32, 0.4);
+  color: #fff;
+}
+
+.stance-btn.active {
+  background: linear-gradient(135deg, rgba(218, 165, 32, 0.3), rgba(168, 120, 216, 0.35));
+  border-color: var(--accent-gold-bright);
+  color: var(--accent-gold-bright);
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+

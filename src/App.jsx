@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MathBackground from "./components/MathBackground";
+import CosmosCanvas from "./components/CosmosCanvas";
 import CouncilVoices from "./components/CouncilVoices";
 import MainPortal from "./views/MainPortal";
 import RomelAdmin from "./views/RomelAdmin";
@@ -9,21 +10,21 @@ import "./App.css";
 export default function App() {
   const [view, setViewState] = useState("portal"); // portal, admin, recipient
   const [judgmentId, setJudgmentIdState] = useState("");
+  const [fallbackEncoded, setFallbackEncoded] = useState("");
   const [triggerQuote, setTriggerQuote] = useState("");
 
-  // Sync state changes to browser URL query parameters
-  // This allows copy-pasting links in Vite SPAs without 404 Vercel router errors.
   const setView = (newView) => {
     setViewState(newView);
     const url = new URL(window.location.href);
     url.searchParams.delete("id");
-    
+    url.searchParams.delete("d");
+
     if (newView === "admin") {
       url.searchParams.set("view", "admin");
     } else {
       url.searchParams.delete("view");
     }
-    
+
     window.history.pushState({}, "", url.toString());
   };
 
@@ -41,10 +42,15 @@ export default function App() {
     const handleUrlChange = () => {
       const params = new URLSearchParams(window.location.search);
       const id = params.get("id");
+      const dataParam = params.get("d") || params.get("data");
       const viewParam = params.get("view");
 
-      if (id) {
-        setJudgmentIdState(id);
+      if (dataParam) {
+        setFallbackEncoded(dataParam);
+      }
+
+      if (id || dataParam) {
+        setJudgmentIdState(id || "");
         setViewState("recipient");
       } else if (viewParam === "admin") {
         setViewState("admin");
@@ -53,17 +59,14 @@ export default function App() {
       }
     };
 
-    // Initial check
     handleUrlChange();
 
     window.addEventListener("popstate", handleUrlChange);
     return () => window.removeEventListener("popstate", handleUrlChange);
   }, []);
 
-  // Helper to trigger voice + whisper bubble
   const triggerCouncilVoice = (quoteKey) => {
     setTriggerQuote(quoteKey);
-    // Clear trigger after a short delay so it can be re-triggered
     setTimeout(() => setTriggerQuote(""), 100);
   };
 
@@ -71,6 +74,7 @@ export default function App() {
     <div className="app-root">
       {/* 🌌 Animated Physical-Mental Background */}
       <MathBackground />
+      <CosmosCanvas />
 
       {/* 🔊 Schizophrenic Council Whispers (TTS + Text Pop-ups) */}
       <CouncilVoices triggerQuote={triggerQuote} autoWhisper={true} />
@@ -94,6 +98,7 @@ export default function App() {
         {view === "recipient" && (
           <RecipientView 
             judgmentId={judgmentId} 
+            fallbackEncoded={fallbackEncoded}
             setView={setView} 
           />
         )}

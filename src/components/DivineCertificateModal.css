@@ -1,0 +1,165 @@
+.cert-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.cert-modal-box {
+  position: relative;
+  background: #0d0a18;
+  border-radius: 12px;
+  max-width: 650px;
+  width: 100%;
+  padding: 24px;
+  box-shadow: 0 0 50px rgba(218, 165, 32, 0.4);
+}
+
+.cert-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.cert-close-btn:hover {
+  color: #fff;
+}
+
+.cert-document {
+  background: linear-gradient(135deg, #1c140a, #0a0612);
+  border-radius: 8px;
+  padding: 20px;
+  color: #fff;
+  text-align: center;
+}
+
+.cert-border-outer {
+  border: 3px double var(--accent-gold-bright);
+  padding: 16px;
+  border-radius: 6px;
+}
+
+.cert-border-inner {
+  border: 1px solid rgba(218, 165, 32, 0.3);
+  padding: 20px;
+}
+
+.cert-seal-icon {
+  color: var(--accent-gold-bright);
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+}
+
+.cert-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--accent-gold-bright);
+  letter-spacing: 2px;
+  margin: 10px 0 4px;
+}
+
+.cert-subtitle {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.cert-body {
+  margin: 24px 0;
+}
+
+.cert-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 6px 0;
+}
+
+.cert-mortal-name {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 15px rgba(218, 165, 32, 0.6);
+  margin: 12px 0;
+}
+
+.cert-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 255, 204, 0.15);
+  border: 1px solid #00ffcc;
+  color: #00ffcc;
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 20px;
+  margin: 12px 0;
+}
+
+.cert-small-print {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.cert-signature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sig-line {
+  color: var(--accent-gold-bright);
+}
+
+.sig-name {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.cert-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.cert-download-btn {
+  background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-goldenrod));
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 10px 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+}
+
+.cert-download-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}

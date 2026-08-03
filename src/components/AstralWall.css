@@ -1,0 +1,208 @@
+.astral-wall-container {
+  padding: 30px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.astral-wall-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.astral-wall-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--accent-gold-bright);
+  letter-spacing: 2px;
+  margin: 0 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.inline-sparkle {
+  color: #00ffcc;
+  animation: spinSlow 10s infinite linear;
+}
+
+.astral-wall-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.astral-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.astral-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.astral-search-box .search-icon {
+  position: absolute;
+  left: 10px;
+  color: var(--text-muted);
+}
+
+.astral-search-input {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(218, 165, 32, 0.25);
+  border-radius: 20px;
+  padding: 6px 14px 6px 30px;
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  width: 180px;
+  transition: all 0.25s ease;
+}
+
+.astral-search-input:focus {
+  outline: none;
+  width: 220px;
+  border-color: var(--accent-gold-bright);
+  box-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
+}
+
+.astral-filters {
+  display: flex;
+  gap: 8px;
+}
+
+.astral-filter-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.astral-filter-btn:hover, .astral-filter-btn.active {
+  background: rgba(218, 165, 32, 0.2);
+  border-color: var(--accent-gold-bright);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
+}
+
+.astral-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.astral-node-card {
+  background: linear-gradient(135deg, rgba(20, 14, 28, 0.85), rgba(10, 6, 16, 0.9));
+  border: 1px solid rgba(218, 165, 32, 0.2);
+  border-radius: 10px;
+  padding: 16px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.astral-node-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: var(--accent-gold-bright);
+  box-shadow: 0 10px 25px rgba(218, 165, 32, 0.25);
+}
+
+.astral-node-card.prohibido {
+  border-left: 4px solid #ff3e3e;
+}
+
+.astral-node-card.permitido {
+  border-left: 4px solid #00ffcc;
+}
+
+.node-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.node-id {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.node-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.node-badge.prohibido {
+  background: rgba(255, 62, 62, 0.2);
+  color: #ff3e3e;
+}
+
+.node-badge.permitido {
+  background: rgba(0, 255, 204, 0.2);
+  color: #00ffcc;
+}
+
+.node-subject {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.node-details {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-gold-bright);
+}
+
+.node-telemetry {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #00ffcc;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.node-hover-action {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+
+.astral-node-card:hover .node-hover-action {
+  color: #fff;
+}

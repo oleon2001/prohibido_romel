@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ArrowLeft, PlusCircle, Copy, Check, Radio, Award, AlertOctagon, Orbit, RefreshCw, Terminal, Sliders, Search, LayoutGrid, List, ChevronDown, X, Share } from "lucide-react";
-import { saveJudgment, getAllLocalJudgments, generateId, deleteJudgment } from "../services/store";
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { ArrowLeft, PlusCircle, Copy, Check, Radio, Award, AlertOctagon, Orbit, RefreshCw, Terminal, Sliders, Search, LayoutGrid, List, ChevronDown, X, Share, Scan, Disc } from "lucide-react";
+import { saveJudgment, getAllLocalJudgments, generateId, deleteJudgment, encodeJudgmentToUrl } from "../services/store";
 import { speakText, VOICE_QUOTES } from "../components/CouncilVoices";
+import { playSharinganHum, playCosmicChime } from "../services/audioSynth";
+import EntropyScanner from "../components/EntropyScanner";
+import ShakaOracle from "../components/ShakaOracle";
 import "./RomelAdmin.css";
 
 export default function RomelAdmin({ setView }) {
@@ -23,6 +26,8 @@ export default function RomelAdmin({ setView }) {
 
   const [digivolvingSubmit, setDigivolvingSubmit] = useState(false);
   const [digivolvingRowId, setDigivolvingRowId] = useState(null);
+  const [tsukuyomiFlash, setTsukuyomiFlash] = useState(false);
+  const [adminSubTab, setAdminSubTab] = useState("form"); // form, scanner, oracle
 
   const [viewMode, setViewMode] = useState("grid");
   const [terminalOpen, setTerminalOpen] = useState(false);
@@ -38,6 +43,23 @@ export default function RomelAdmin({ setView }) {
   ]);
 
   const logRef = useRef(null);
+
+  const handleScanFill = (result) => {
+    setMortalName(result.name);
+    setStatus(result.status);
+    setEntropy(result.entropy);
+    setDivineWill(result.divineWill.toString());
+    setFCategory(result.fCategory.toString());
+    setAdminSubTab("form");
+    addLog(`[ESCÁNER] Cargar parámetros cuánticos para ${result.name}`);
+  };
+
+  const handleHeaderSharinganClick = () => {
+    playSharinganHum();
+    setTsukuyomiFlash(true);
+    setTimeout(() => setTsukuyomiFlash(false), 800);
+    addLog(`[RINNEGAN] Ojo celestial activado.`);
+  };
 
   const addLog = (text) => {
     setConsoleLogs((prev) => [
@@ -71,34 +93,39 @@ export default function RomelAdmin({ setView }) {
     }
   }, [status]);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setSyncing(true);
     try {
       const data = await getAllLocalJudgments();
-      setJudgments(data);
 
       data.forEach(j => {
         if (j.appealSubmitted && !judgments.some(prev => prev.id === j.id && prev.appealSubmitted)) {
           addLog(`[APELACIÓN] ${j.name} ha emitido contraargumentación para ID #${j.id}`);
         }
+        if (j.seen && !judgments.some(prev => prev.id === j.id && prev.seen)) {
+          addLog(`[👁️ ALERTA DE VISTO] ¡${j.name} ha abierto su decreto mental en vivo!`);
+          speakText(`¡Atención Creador Romel! ${j.name} acaba de abrir su decreto mental.`, null, 0.9, 1.0);
+        }
       });
+
+      setJudgments(data);
     } catch (error) {
       console.error("Failed to load judgments:", error);
     } finally {
       setSyncing(false);
     }
-  };
+  }, [judgments]);
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [loadData]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       loadData();
     }, 5000);
     return () => clearInterval(interval);
-  }, [judgments]);
+  }, [loadData]);
 
   const handleVoicePreview = (quoteKey) => {
     const textToSpeak = VOICE_QUOTES[quoteKey]?.text || "";
@@ -134,7 +161,8 @@ export default function RomelAdmin({ setView }) {
 
       setTimeout(() => {
         const finalId = saved.id || tempId;
-        const shareUrl = `${window.location.origin}${window.location.pathname}?id=${finalId}`;
+        const encodedData = encodeJudgmentToUrl(saved);
+        const shareUrl = `${window.location.origin}${window.location.pathname}?id=${finalId}&d=${encodedData}`;
         setCreatedUrl(shareUrl);
         setMortalName("");
         setDigivolvingSubmit(false);
@@ -232,14 +260,43 @@ export default function RomelAdmin({ setView }) {
         </svg>
       </div>
 
+      {tsukuyomiFlash && <div className="tsukuyomi-flash-overlay"></div>}
+
       <div className="admin-header">
         <button onClick={() => setView("portal")} className="back-portal-btn">
           <ArrowLeft size={16} /> Volver al Portal
         </button>
+        
+        <div className="sharingan-header-eye" onClick={handleHeaderSharinganClick} title="Ojo Celestial de Madara (Click para activar Tsukuyomi)">
+          <div className="sharingan-pupil"></div>
+        </div>
+
         <h1 className="admin-title">CONSEJO DE MADARA UCHIHA</h1>
         <p className="admin-subtitle">
           "El verdadero infierno es la realidad... Solo la ilusión puede ser perfecta."
         </p>
+      </div>
+
+      {/* Admin Sub-Tool Tabs */}
+      <div className="admin-subtabs-bar">
+        <button
+          className={`admin-subtab-btn ${adminSubTab === "form" ? "active" : ""}`}
+          onClick={() => { playCosmicChime(); setAdminSubTab("form"); }}
+        >
+          <PlusCircle size={14} /> FORJAR DECRETO
+        </button>
+        <button
+          className={`admin-subtab-btn ${adminSubTab === "scanner" ? "active" : ""}`}
+          onClick={() => { playCosmicChime(); setAdminSubTab("scanner"); }}
+        >
+          <Scan size={14} /> ESCÁNER CUÁNTICO
+        </button>
+        <button
+          className={`admin-subtab-btn ${adminSubTab === "oracle" ? "active" : ""}`}
+          onClick={() => { playCosmicChime(); setAdminSubTab("oracle"); }}
+        >
+          <Disc size={14} /> ROSARIO DE SHAKA
+        </button>
       </div>
 
       <div className="stats-bar">
@@ -250,12 +307,21 @@ export default function RomelAdmin({ setView }) {
 
       <div className="admin-grid">
         <div className="admin-left-col">
-          <div className="admin-card glass-panel madara-card">
-            <div className="wax-seal"></div>
-            <div className="sharingan-overlay"></div>
-            <h2 className="panel-title">
-              <PlusCircle size={18} className="glow-icon-madara" /> Sellar Nueva Sentencia
-            </h2>
+          {adminSubTab === "scanner" && (
+            <EntropyScanner onScanComplete={handleScanFill} />
+          )}
+
+          {adminSubTab === "oracle" && (
+            <ShakaOracle />
+          )}
+
+          {adminSubTab === "form" && (
+            <div className="admin-card glass-panel madara-card">
+              <div className="wax-seal"></div>
+              <div className="sharingan-overlay"></div>
+              <h2 className="panel-title">
+                <PlusCircle size={18} className="glow-icon-madara" /> Sellar Nueva Sentencia
+              </h2>
             <form onSubmit={handleSubmit} className="judgment-form">
               <div className="form-group">
                 <label>Nombre del Mortal:</label>
@@ -429,6 +495,7 @@ export default function RomelAdmin({ setView }) {
               </div>
             )}
           </div>
+          )}
 
           <div className={`admin-card glass-panel terminal-card ${!terminalOpen ? "collapsed" : ""}`}>
             <div className="terminal-header" onClick={() => { setTerminalOpen(!terminalOpen); if (!terminalOpen) setUnreadLogs(0); }}>
@@ -501,7 +568,7 @@ export default function RomelAdmin({ setView }) {
                 </div>
               ) : (
                 filteredJudgments.map((j) => {
-                  const link = `${window.location.origin}${window.location.pathname}?id=${j.id}`;
+                  const link = `${window.location.origin}${window.location.pathname}?id=${j.id}&d=${encodeJudgmentToUrl(j)}`;
                   const isDigivolving = digivolvingRowId === j.id;
                   const stars = Math.min(5, Math.max(1, j.fCategory || 1));
 
@@ -515,6 +582,15 @@ export default function RomelAdmin({ setView }) {
 
                       <div className="mini-card-top">
                         <span className="mini-card-id">#{j.id.substring(0, 6)}</span>
+                        {j.seen ? (
+                          <span className="telemetry-pill seen" title={`Visto ${j.viewCount || 1} veces`}>
+                            👁️ {j.viewCount || 1}x
+                          </span>
+                        ) : (
+                          <span className="telemetry-pill unread" title="El mortal no ha abierto la sentencia">
+                            ⏳ Pendiente
+                          </span>
+                        )}
                         <button className="mini-card-delete" onClick={(e) => { e.stopPropagation(); handleDelete(j.id, j.name); }} title="Eliminar">
                           <X size={12} />
                         </button>
@@ -569,7 +645,7 @@ export default function RomelAdmin({ setView }) {
                 </div>
               ) : (
                 filteredJudgments.map((j) => {
-                  const link = `${window.location.origin}${window.location.pathname}?id=${j.id}`;
+                  const link = `${window.location.origin}${window.location.pathname}?id=${j.id}&d=${encodeJudgmentToUrl(j)}`;
                   const isDigivolving = digivolvingRowId === j.id;
                   return (
                     <div
