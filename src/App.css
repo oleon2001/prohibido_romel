@@ -1,48 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cinzel:wght@600;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 :root {
+  --font-display: 'Cinzel Decorative', 'Cinzel', serif;
   --font-heading: 'Cinzel', serif;
   --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Courier New', monospace;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
-  /* Sophisticated Dark Slate Palette */
-  --bg-deep-obsidian: #08090d;
-  --bg-card-slate: rgba(16, 19, 28, 0.78);
-  --bg-panel-border: rgba(200, 170, 110, 0.18);
-  
-  /* Refined Accents */
-  --accent-gold: #d8b878;
-  --accent-gold-glow: rgba(216, 184, 120, 0.25);
-  --accent-crimson: #c93b3b;
-  --accent-crimson-glow: rgba(201, 59, 59, 0.25);
-  --accent-cyan-subtle: #4a9ebb;
-  
-  /* Text colors */
-  --text-primary: #f0ede6;
-  --text-secondary: #9da5b4;
-  --text-muted: #626975;
+  /* Sacred Obsidian & Deep Void Surfaces */
+  --bg-deep-obsidian: #04040a;
+  --bg-void-secondary: #080914;
+  --bg-card-slate: rgba(11, 13, 24, 0.78);
+  --bg-glass-heavy: rgba(9, 10, 19, 0.86);
+  --bg-glass-subtle: rgba(16, 18, 32, 0.62);
+  --bg-panel-border: rgba(218, 165, 32, 0.22);
 
-  /* Zodiac Golden & Parchment */
-  --accent-goldenrod: #daa520;
+  /* Virgo Shaka Golds & Celestial Ambers */
+  --accent-gold: #e5c158;
+  --accent-goldenrod: #d4a017;
   --accent-gold-bright: #ffd700;
-  --accent-gold-amber: #ffb347;
-  --bg-parchment-dark: rgba(22, 16, 6, 0.82);
-  --bg-parchment-med: rgba(28, 20, 8, 0.72);
+  --accent-gold-amber: #ffae42;
+  --accent-gold-pale: #fff3c4;
+  --accent-gold-glow: rgba(255, 215, 0, 0.28);
+
+  /* Crimson Prohibition & Madara Uchiha */
+  --accent-crimson: #e63946;
+  --accent-crimson-bright: #ff2a4b;
+  --accent-crimson-glow: rgba(230, 57, 70, 0.35);
+  --madara-crimson: #8b0015;
+  --madara-red: #dc143c;
+  --madara-purple: #6c2bd9;
+  --madara-black: #070309;
+  --madara-red-glow: rgba(220, 20, 60, 0.4);
+
+  /* Quantum Physics & Council Accents */
+  --accent-cyan-subtle: #38bdf8;
+  --accent-cyan-terminal: #00f5d4;
+  --accent-emerald-seen: #10b981;
+  --accent-purple-council: #a855f7;
+  --accent-purple-bright: #c084fc;
+  --accent-dirac: #ffb703;
+  --text-schizo: #f43f5e;
+
+  /* Typography Hierarchy */
+  --text-primary: #f8f5ee;
+  --text-secondary: #b0b7c9;
+  --text-muted: #687086;
+
+  /* Legacy Parchment Variables mapped to Refined Astral Obsidian */
+  --bg-parchment-dark: rgba(12, 11, 20, 0.88);
+  --bg-parchment-med: rgba(18, 16, 28, 0.78);
   --bg-parchment-border: rgba(218, 165, 32, 0.28);
-  --bg-scroll-edge: rgba(30, 20, 5, 0.9);
+  --bg-scroll-edge: rgba(24, 19, 10, 0.92);
 
-  /* Madara Uchiha */
-  --madara-crimson: #8b0000;
-  --madara-red: #cc0000;
-  --madara-purple: #5b2c8e;
-  --madara-black: #0a0505;
-  --madara-red-glow: rgba(139, 0, 0, 0.35);
-
-  /* Council & Schizo */
-  --accent-purple-council: #b886ff;
-  --accent-cyan-terminal: #00e5ff;
-  --accent-dirac: #ffb347;
-  --text-schizo: #ff6b9d;
+  /* Elevation & Shadows */
+  --shadow-cosmic: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 30px rgba(218, 165, 32, 0.08);
+  --shadow-gold-bloom: 0 0 25px rgba(255, 215, 0, 0.25);
+  --shadow-crimson-bloom: 0 0 25px rgba(220, 20, 60, 0.3);
 }
 
 body {
@@ -55,12 +68,34 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  selection-background-color: rgba(218, 165, 32, 0.3);
+}
+
+::selection {
+  background: rgba(218, 165, 32, 0.3);
+  color: var(--accent-gold-pale);
 }
 
 .app-root {
   min-height: 100vh;
   width: 100%;
   position: relative;
+  isolation: isolate;
+}
+
+/* Subtle Film/Cosmic Grain Overlay */
+.app-root::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.028;
+  background-image: radial-gradient(rgba(255, 215, 0, 0.7) 0.5px, transparent 0.5px),
+                    radial-gradient(rgba(255, 255, 255, 0.5) 0.5px, #000000 0.5px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  mix-blend-mode: overlay;
 }
 
 .app-main-content {
@@ -70,22 +105,23 @@ body {
   min-height: 100vh;
 }
 
-/* Scrollbars */
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #050608;
+  background: #04040a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(218, 165, 32, 0.35);
-  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(218, 165, 32, 0.45), rgba(168, 85, 247, 0.45));
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(218, 165, 32, 0.6);
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.75), rgba(192, 132, 252, 0.75));
 }
 
 @media (max-width: 480px) {
@@ -94,9 +130,5 @@ body {
   }
   ::-webkit-scrollbar {
     width: 3px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(218, 165, 32, 0.2);
-    border-radius: 2px;
   }
 }

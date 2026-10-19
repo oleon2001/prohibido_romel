@@ -1,18 +1,17 @@
 .glass-panel-oracle {
-  background: rgba(18, 12, 28, 0.88);
-  border: 1px solid rgba(218, 165, 32, 0.3);
-  border-radius: 10px;
-  padding: 20px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 120, 216, 0.2);
-  margin-bottom: 24px;
+  background: linear-gradient(160deg, rgba(20, 15, 34, 0.9) 0%, rgba(9, 8, 18, 0.95) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(168, 85, 247, 0.15);
 }
 
 .oracle-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .oracle-icon-glow {
@@ -22,10 +21,10 @@
 
 .oracle-title {
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: var(--accent-gold-bright);
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   margin: 0;
 }
 
@@ -33,19 +32,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
+  padding: 10px 0;
 }
 
 .oracle-rosario-wheel {
   position: relative;
-  width: 150px;
-  height: 150px;
+  width: 164px;
+  height: 164px;
   border-radius: 50%;
-  border: 2px dashed rgba(218, 165, 32, 0.4);
+  border: 1.5px dashed rgba(255, 215, 0, 0.45);
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 2s cubic-bezier(0.15, 0.85, 0.35, 1.2);
+  transition: transform 2s cubic-bezier(0.15, 0.85, 0.35, 1.15);
 }
 
 .rosario-bead {
@@ -57,27 +58,29 @@
 }
 
 .bead-core {
-  width: 14px;
-  height: 14px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  background: radial-gradient(circle, #ffd700, #8b0000);
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+  background: radial-gradient(circle at 35% 35%, #fff3c4 0%, #ffd700 45%, #99001b 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
 }
 
 .wheel-center-seal {
-  font-size: 1.8rem;
-  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+  font-size: 2rem;
+  filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.7));
 }
 
 .spin-oracle-btn {
-  background: linear-gradient(135deg, rgba(218, 165, 32, 0.3), rgba(168, 120, 216, 0.4));
+  background: linear-gradient(135deg, rgba(218, 165, 32, 0.28), rgba(168, 85, 247, 0.38));
   border: 1px solid var(--accent-gold-bright);
-  border-radius: 8px;
+  border-radius: 999px;
   color: #fff;
   font-family: var(--font-heading);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 800;
-  padding: 10px 20px;
+  letter-spacing: 1.2px;
+  padding: 11px 24px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -86,30 +89,32 @@
 }
 
 .spin-oracle-btn:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.45);
 }
 
 .oracle-quote-box {
-  margin-top: 16px;
-  background: rgba(0, 0, 0, 0.4);
+  margin-top: 18px;
+  background: rgba(6, 7, 15, 0.8);
+  border: 1px solid rgba(255, 215, 0, 0.25);
   border-left: 3px solid var(--accent-gold-bright);
-  padding: 10px 14px;
-  border-radius: 4px;
+  padding: 12px 16px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  animation: fadeIn 0.3s ease-out;
+  gap: 12px;
 }
 
 .quote-speaker-icon {
   color: var(--accent-gold-bright);
+  flex-shrink: 0;
 }
 
 .oracle-quote-text {
   font-family: var(--font-body);
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   font-style: italic;
-  color: #fff;
+  color: var(--accent-gold-pale);
   margin: 0;
+  line-height: 1.45;
 }

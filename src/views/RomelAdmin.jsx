@@ -247,7 +247,7 @@ export default function RomelAdmin({ setView }) {
           <div className="digi-admin-text">
             ¡{mortalName.toUpperCase()} DIGIEVOLUCIONA!
           </div>
-          <div className="digi-admin-subtext">WARP DIGIVOLUTION...</div>
+          <div className="digi-admin-subtext">WARP DIGIVOLUTION · SELLANDO VECTOR CUÁNTICO...</div>
         </div>
       )}
 
@@ -262,47 +262,76 @@ export default function RomelAdmin({ setView }) {
 
       {tsukuyomiFlash && <div className="tsukuyomi-flash-overlay"></div>}
 
+      {/* Top Navigation & Sharingan Header */}
       <div className="admin-header">
         <button onClick={() => setView("portal")} className="back-portal-btn">
           <ArrowLeft size={16} /> Volver al Portal
         </button>
-        
-        <div className="sharingan-header-eye" onClick={handleHeaderSharinganClick} title="Ojo Celestial de Madara (Click para activar Tsukuyomi)">
-          <div className="sharingan-pupil"></div>
+
+        <div
+          className="sharingan-header-eye"
+          onClick={handleHeaderSharinganClick}
+          title="Ojo Celestial Rinne-Sharingan de Madara (Click para activar Tsukuyomi)"
+        >
+          <svg viewBox="0 0 100 100" className="sharingan-svg">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(255,42,75,0.5)" strokeWidth="1.5" />
+            <circle cx="50" cy="50" r="34" fill="none" stroke="rgba(0,0,0,0.65)" strokeWidth="1.5" strokeDasharray="8 4" />
+            <circle cx="50" cy="50" r="22" fill="none" stroke="rgba(0,0,0,0.75)" strokeWidth="1.8" />
+            {/* 3 Tomoe */}
+            <circle cx="50" cy="28" r="4.5" fill="#050002" />
+            <circle cx="31" cy="61" r="4.5" fill="#050002" />
+            <circle cx="69" cy="61" r="4.5" fill="#050002" />
+            <circle cx="50" cy="50" r="9" fill="#050002" stroke="#ff2a4b" strokeWidth="1.5" />
+          </svg>
         </div>
 
+        <div className="admin-eyebrow">CONSOLA SUPREMA DEL CREADOR ROMEL · TSUKUYOMI INFINITO</div>
         <h1 className="admin-title">CONSEJO DE MADARA UCHIHA</h1>
         <p className="admin-subtitle">
           "El verdadero infierno es la realidad... Solo la ilusión puede ser perfecta."
         </p>
       </div>
 
-      {/* Admin Sub-Tool Tabs */}
-      <div className="admin-subtabs-bar">
-        <button
-          className={`admin-subtab-btn ${adminSubTab === "form" ? "active" : ""}`}
-          onClick={() => { playCosmicChime(); setAdminSubTab("form"); }}
-        >
-          <PlusCircle size={14} /> FORJAR DECRETO
-        </button>
-        <button
-          className={`admin-subtab-btn ${adminSubTab === "scanner" ? "active" : ""}`}
-          onClick={() => { playCosmicChime(); setAdminSubTab("scanner"); }}
-        >
-          <Scan size={14} /> ESCÁNER CUÁNTICO
-        </button>
-        <button
-          className={`admin-subtab-btn ${adminSubTab === "oracle" ? "active" : ""}`}
-          onClick={() => { playCosmicChime(); setAdminSubTab("oracle"); }}
-        >
-          <Disc size={14} /> ROSARIO DE SHAKA
-        </button>
-      </div>
+      {/* Top Telemetry & Sub-Tools Row */}
+      <div className="admin-top-controls-row">
+        <div className="admin-subtabs-bar">
+          <button
+            className={`admin-subtab-btn ${adminSubTab === "form" ? "active" : ""}`}
+            onClick={() => { playCosmicChime(); setAdminSubTab("form"); }}
+          >
+            <PlusCircle size={15} /> FORJAR DECRETO
+          </button>
+          <button
+            className={`admin-subtab-btn ${adminSubTab === "scanner" ? "active" : ""}`}
+            onClick={() => { playCosmicChime(); setAdminSubTab("scanner"); }}
+          >
+            <Scan size={15} /> ESCÁNER CUÁNTICO
+          </button>
+          <button
+            className={`admin-subtab-btn ${adminSubTab === "oracle" ? "active" : ""}`}
+            onClick={() => { playCosmicChime(); setAdminSubTab("oracle"); }}
+          >
+            <Disc size={15} /> ROSARIO DE SHAKA
+          </button>
+        </div>
 
-      <div className="stats-bar">
-        <div className="stat-badge"><span className="dot dot-prohibited"></span> {prohibitedCount} Prohibidos</div>
-        <div className="stat-badge"><span className="dot dot-permitted"></span> {permittedCount} Permitidos</div>
-        <div className="stat-badge"><span className="dot dot-appeals"></span> {appealCount} Apelaciones</div>
+        <div className="stats-bar">
+          <div className="stat-badge">
+            <span className="dot dot-prohibited"></span>
+            <span className="stat-count">{prohibitedCount}</span>
+            <span className="stat-txt">Prohibidos</span>
+          </div>
+          <div className="stat-badge">
+            <span className="dot dot-permitted"></span>
+            <span className="stat-count">{permittedCount}</span>
+            <span className="stat-txt">Permitidos</span>
+          </div>
+          <div className="stat-badge">
+            <span className="dot dot-appeals"></span>
+            <span className="stat-count">{appealCount}</span>
+            <span className="stat-txt">Apelaciones</span>
+          </div>
+        </div>
       </div>
 
       <div className="admin-grid">
@@ -317,184 +346,190 @@ export default function RomelAdmin({ setView }) {
 
           {adminSubTab === "form" && (
             <div className="admin-card glass-panel madara-card">
-              <div className="wax-seal"></div>
+              <div className="wax-seal" title="Sello Imperial del Creador"></div>
               <div className="sharingan-overlay"></div>
+
               <h2 className="panel-title">
-                <PlusCircle size={18} className="glow-icon-madara" /> Sellar Nueva Sentencia
+                <PlusCircle size={19} className="glow-icon-madara" /> Sellar Nueva Sentencia
               </h2>
-            <form onSubmit={handleSubmit} className="judgment-form">
-              <div className="form-group">
-                <label>Nombre del Mortal:</label>
-                <input
-                  type="text"
-                  placeholder="Ej. Juan Pérez"
-                  value={mortalName}
-                  onChange={(e) => setMortalName(e.target.value)}
-                  required
-                  className="admin-input"
-                />
-              </div>
 
-              <div className="form-group">
-                <label>Sentencia:</label>
-                <div className="toggle-container">
-                  <button
-                    type="button"
-                    onClick={() => setStatus("prohibido")}
-                    className={`toggle-btn btn-prohibido ${status === "prohibido" ? "active" : ""}`}
-                  >
-                    <AlertOctagon size={14} /> PROHIBIDO
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setStatus("permitido")}
-                    className={`toggle-btn btn-permitido ${status === "permitido" ? "active" : ""}`}
-                  >
-                    <Award size={14} /> PERMITIDO
-                  </button>
-                </div>
-              </div>
-
-              <div className="form-row">
-                <div className="form-group half-width">
-                  <label>¿A qué F pertenece?</label>
-                  <select
-                    value={fCategory}
-                    onChange={(e) => setFCategory(e.target.value)}
-                    className="admin-select"
-                  >
-                    <option value="1">F1</option>
-                    <option value="2">F2</option>
-                    <option value="3">F3</option>
-                    <option value="4">F4</option>
-                    <option value="5">F5</option>
-                  </select>
-                </div>
-
-                <div className="form-group half-width">
-                  <label>Nivel de Voluntad:</label>
+              <form onSubmit={handleSubmit} className="judgment-form">
+                <div className="form-group">
+                  <label>Nombre del Mortal:</label>
                   <input
                     type="text"
-                    value={divineWill}
-                    onChange={(e) => setDivineWill(e.target.value)}
+                    placeholder="Ej. Juan Pérez"
+                    value={mortalName}
+                    onChange={(e) => setMortalName(e.target.value)}
+                    required
                     className="admin-input"
                   />
                 </div>
-              </div>
 
-              <div className="form-group">
-                <label>Entropía Asignada (ENT): {entropy}</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="9999"
-                  step="50"
-                  value={entropy}
-                  onChange={(e) => setEntropy(e.target.value)}
-                  className="admin-range main-entropy-slider"
-                />
-              </div>
-
-              <div className="accordion-section">
-                <div className="accordion-header" onClick={() => setVoiceSectionOpen(!voiceSectionOpen)}>
-                  <span>Susurro del Consejo</span>
-                  <ChevronDown size={14} className={`chevron ${voiceSectionOpen ? "open" : ""}`} />
-                </div>
-                <div className={`accordion-content ${voiceSectionOpen ? "open" : ""}`}>
-                  <div className="voice-selector">
-                    <select
-                      value={voiceQuote}
-                      onChange={(e) => setVoiceQuote(e.target.value)}
-                      className="admin-select"
-                    >
-                      {Object.keys(VOICE_QUOTES).map((key) => (
-                        <option key={key} value={key}>
-                          {VOICE_QUOTES[key].text}
-                        </option>
-                      ))}
-                    </select>
+                <div className="form-group">
+                  <label>Sentencia Cósmica:</label>
+                  <div className="toggle-container">
                     <button
                       type="button"
-                      onClick={() => handleVoicePreview(voiceQuote)}
-                      className="preview-voice-btn"
+                      onClick={() => setStatus("prohibido")}
+                      className={`toggle-btn btn-prohibido ${status === "prohibido" ? "active" : ""}`}
                     >
-                      Escuchar
+                      <AlertOctagon size={15} /> PROHIBIDO
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setStatus("permitido")}
+                      className={`toggle-btn btn-permitido ${status === "permitido" ? "active" : ""}`}
+                    >
+                      <Award size={15} /> PERMITIDO
                     </button>
                   </div>
                 </div>
-              </div>
 
-              <div className="accordion-section">
-                <div className="accordion-header" onClick={() => setTunerSectionOpen(!tunerSectionOpen)}>
-                  <span>Modulador de Frecuencia Esquizofrénica</span>
-                  <ChevronDown size={14} className={`chevron ${tunerSectionOpen ? "open" : ""}`} />
+                <div className="form-row">
+                  <div className="form-group half-width">
+                    <label>¿A qué F pertenece?</label>
+                    <select
+                      value={fCategory}
+                      onChange={(e) => setFCategory(e.target.value)}
+                      className="admin-select"
+                    >
+                      <option value="1">F1 · Nivel Base</option>
+                      <option value="2">F2 · Anomalía Menor</option>
+                      <option value="3">F3 · Resonancia Media</option>
+                      <option value="4">F4 · Alta Entropía</option>
+                      <option value="5">F5 · Escala de Planck</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group half-width">
+                    <label>Nivel de Voluntad (NV):</label>
+                    <input
+                      type="text"
+                      value={divineWill}
+                      onChange={(e) => setDivineWill(e.target.value)}
+                      className="admin-input"
+                    />
+                  </div>
                 </div>
-                <div className={`accordion-content ${tunerSectionOpen ? "open" : ""}`}>
-                  <div className="voice-tuner-box">
-                    <div className="tuner-title">
-                      <Sliders size={12} /> Parámetros de Voz
-                    </div>
-                    <div className="tuner-slider-group">
-                      <div className="tuner-label">
-                        <span>Tono (Pitch): {customPitch.toFixed(2)}</span>
-                        <span className="unit-label">{customPitch < 0.8 ? "Tétrico" : customPitch > 1.3 ? "Histérico" : "Robótico"}</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0.3"
-                        max="2.0"
-                        step="0.05"
-                        value={customPitch}
-                        onChange={(e) => setCustomPitch(parseFloat(e.target.value))}
-                        className="admin-range pitch-range"
-                      />
-                    </div>
-                    <div className="tuner-slider-group">
-                      <div className="tuner-label">
-                        <span>Velocidad (Rate): {customRate.toFixed(2)}</span>
-                        <span className="unit-label">{customRate < 0.8 ? "Lento" : "Rápido"}</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0.5"
-                        max="2.0"
-                        step="0.05"
-                        value={customRate}
-                        onChange={(e) => setCustomRate(parseFloat(e.target.value))}
-                        className="admin-range rate-range"
-                      />
+
+                <div className="form-group">
+                  <div className="slider-header-row">
+                    <label>Entropía Asignada (ENT):</label>
+                    <span className="entropy-live-pill">{entropy} S/k</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="9999"
+                    step="50"
+                    value={entropy}
+                    onChange={(e) => setEntropy(e.target.value)}
+                    className="admin-range main-entropy-slider"
+                  />
+                </div>
+
+                <div className="accordion-section">
+                  <div className="accordion-header" onClick={() => setVoiceSectionOpen(!voiceSectionOpen)}>
+                    <span>Susurro del Consejo</span>
+                    <ChevronDown size={14} className={`chevron ${voiceSectionOpen ? "open" : ""}`} />
+                  </div>
+                  <div className={`accordion-content ${voiceSectionOpen ? "open" : ""}`}>
+                    <div className="voice-selector">
+                      <select
+                        value={voiceQuote}
+                        onChange={(e) => setVoiceQuote(e.target.value)}
+                        className="admin-select"
+                      >
+                        {Object.keys(VOICE_QUOTES).map((key) => (
+                          <option key={key} value={key}>
+                            {VOICE_QUOTES[key].text}
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        type="button"
+                        onClick={() => handleVoicePreview(voiceQuote)}
+                        className="preview-voice-btn"
+                      >
+                        Escuchar
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <button type="submit" className="submit-judgment-btn">
-                INVOCAR TSUKUYOMI INFINITO
-              </button>
-            </form>
-
-            {createdUrl && (
-              <div className="url-result-box">
-                <div className="url-result-label">¡Enlace Sincronizado en la Nube Cuántica!</div>
-                <div className="url-copy-row">
-                  <input type="text" readOnly value={createdUrl} className="url-output" />
-                  <button
-                    onClick={() => copyToClipboard(createdUrl, "new")}
-                    className="copy-btn"
-                  >
-                    {copiedId === "new" ? <Check size={18} color="#00ffcc" /> : <Copy size={18} />}
-                  </button>
-                  <button
-                    onClick={() => shareWhatsApp(createdUrl, mortalName, status === "prohibido" ? "PROHIBIDO" : "PERMITIDO")}
-                    className="copy-btn whatsapp-btn"
-                    title="Compartir por WhatsApp"
-                  >
-                    <Share size={18} />
-                  </button>
+                <div className="accordion-section">
+                  <div className="accordion-header" onClick={() => setTunerSectionOpen(!tunerSectionOpen)}>
+                    <span>Modulador de Frecuencia Esquizofrénica</span>
+                    <ChevronDown size={14} className={`chevron ${tunerSectionOpen ? "open" : ""}`} />
+                  </div>
+                  <div className={`accordion-content ${tunerSectionOpen ? "open" : ""}`}>
+                    <div className="voice-tuner-box">
+                      <div className="tuner-title">
+                        <Sliders size={12} /> Parámetros de Voz
+                      </div>
+                      <div className="tuner-slider-group">
+                        <div className="tuner-label">
+                          <span>Tono (Pitch): {customPitch.toFixed(2)}</span>
+                          <span className="unit-label">{customPitch < 0.8 ? "Tétrico" : customPitch > 1.3 ? "Histérico" : "Robótico"}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0.3"
+                          max="2.0"
+                          step="0.05"
+                          value={customPitch}
+                          onChange={(e) => setCustomPitch(parseFloat(e.target.value))}
+                          className="admin-range pitch-range"
+                        />
+                      </div>
+                      <div className="tuner-slider-group">
+                        <div className="tuner-label">
+                          <span>Velocidad (Rate): {customRate.toFixed(2)}</span>
+                          <span className="unit-label">{customRate < 0.8 ? "Lento" : "Rápido"}</span>
+                        </div>
+                        <input
+                          type="range"
+                          min="0.5"
+                          max="2.0"
+                          step="0.05"
+                          value={customRate}
+                          onChange={(e) => setCustomRate(parseFloat(e.target.value))}
+                          className="admin-range rate-range"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+
+                <button type="submit" className="submit-judgment-btn">
+                  INVOCAR TSUKUYOMI INFINITO
+                </button>
+              </form>
+
+              {createdUrl && (
+                <div className="url-result-box">
+                  <div className="url-result-label">¡Enlace Sincronizado en la Nube Cuántica!</div>
+                  <div className="url-copy-row">
+                    <input type="text" readOnly value={createdUrl} className="url-output" />
+                    <button
+                      onClick={() => copyToClipboard(createdUrl, "new")}
+                      className="copy-btn"
+                      title="Copiar Enlace"
+                    >
+                      {copiedId === "new" ? <Check size={17} color="#00f5d4" /> : <Copy size={17} />}
+                    </button>
+                    <button
+                      onClick={() => shareWhatsApp(createdUrl, mortalName || "Mortal", status === "prohibido" ? "PROHIBIDO" : "PERMITIDO")}
+                      className="copy-btn whatsapp-btn"
+                      title="Compartir por WhatsApp"
+                    >
+                      <Share size={17} />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           )}
 
           <div className={`admin-card glass-panel terminal-card ${!terminalOpen ? "collapsed" : ""}`}>
@@ -507,7 +542,7 @@ export default function RomelAdmin({ setView }) {
                 {!terminalOpen && unreadLogs > 0 && (
                   <span className="terminal-badge">{unreadLogs} nuevos</span>
                 )}
-                <ChevronDown size={12} className={`chevron ${terminalOpen ? "open" : ""}`} />
+                <ChevronDown size={13} className={`chevron ${terminalOpen ? "open" : ""}`} />
               </div>
             </div>
             <div ref={logRef} className="terminal-content">
@@ -518,10 +553,11 @@ export default function RomelAdmin({ setView }) {
           </div>
         </div>
 
+        {/* Right Column: Registry of Decrees */}
         <div className="admin-card glass-panel flex-column active-registry-panel">
           <div className="panel-header-row">
             <h2 className="panel-title">
-              <Radio size={18} className="glow-icon-blue" /> Registro de Decretos
+              <Radio size={18} className="glow-icon-blue" /> Registro de Decretos ({filteredJudgments.length})
             </h2>
             <div className="panel-header-actions">
               <div className="view-toggle-group">
@@ -541,10 +577,10 @@ export default function RomelAdmin({ setView }) {
                 </button>
               </div>
               <div className="sync-indicator">
-                <button onClick={loadData} disabled={syncing} className="refresh-btn">
+                <button onClick={loadData} disabled={syncing} className="refresh-btn" title="Sincronizar">
                   <RefreshCw size={14} className={syncing ? "spin-icon" : ""} />
                 </button>
-                <span>{syncing ? "Sincronizando..." : "5s"}</span>
+                <span>{syncing ? "Sincronizando..." : "En vivo · 5s"}</span>
               </div>
             </div>
           </div>
@@ -553,7 +589,7 @@ export default function RomelAdmin({ setView }) {
             <Search size={14} className="search-icon" />
             <input
               type="text"
-              placeholder="Buscar mortal o ID..."
+              placeholder="Buscar mortal o ID en el registro..."
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
               className="search-input"
@@ -564,7 +600,7 @@ export default function RomelAdmin({ setView }) {
             <div className="judgments-deck">
               {filteredJudgments.length === 0 ? (
                 <div className="empty-list-message">
-                  {filterQuery ? "Sin resultados." : "No hay decretos activos. Sella uno a la izquierda."}
+                  {filterQuery ? "Sin resultados en el flujo." : "No hay decretos activos. Sella uno a la izquierda."}
                 </div>
               ) : (
                 filteredJudgments.map((j) => {
@@ -578,7 +614,7 @@ export default function RomelAdmin({ setView }) {
                       className={`mini-card ${j.status} ${isDigivolving ? "digivolving-row" : ""}`}
                     >
                       <div className="card-mini-foil"></div>
-                      {j.appealSubmitted && <div className="mini-card-appeal-badge"></div>}
+                      {j.appealSubmitted && <div className="mini-card-appeal-badge" title="Apelación Recibida"></div>}
 
                       <div className="mini-card-top">
                         <span className="mini-card-id">#{j.id.substring(0, 6)}</span>
@@ -591,44 +627,50 @@ export default function RomelAdmin({ setView }) {
                             ⏳ Pendiente
                           </span>
                         )}
-                        <button className="mini-card-delete" onClick={(e) => { e.stopPropagation(); handleDelete(j.id, j.name); }} title="Eliminar">
-                          <X size={12} />
+                        <button
+                          className="mini-card-delete"
+                          onClick={(e) => { e.stopPropagation(); handleDelete(j.id, j.name); }}
+                          title="Erradicar Decreto"
+                        >
+                          <X size={13} />
                         </button>
                       </div>
 
-                      <div className="mini-card-name">{j.name}</div>
+                      <div className="mini-card-name" title={j.name}>{j.name}</div>
 
                       <div className="mini-card-stars">
                         {Array.from({ length: stars }).map((_, i) => (
-                          <Orbit key={i} size={10} className="mini-star" />
+                          <Orbit key={i} size={11} className="mini-star" />
                         ))}
                       </div>
 
                       <div className="mini-card-stats">
-                        <span>⚡{j.divineWill}</span>
-                        <span>🔥{j.entropy}</span>
+                        <span>NV: {j.divineWill}</span>
+                        <span>ENT: {j.entropy}</span>
                       </div>
 
                       <div className="mini-card-bottom">
                         <button
                           onClick={() => handleToggleStatus(j)}
                           className={`mini-status-pill ${j.status}`}
+                          title="Click para invertir sentencia"
                         >
                           {j.status === "prohibido" ? "PROHIBIDO" : "PERMITIDO"}
                         </button>
-                        <div style={{ display: 'flex', gap: '4px' }}>
+                        <div className="mini-card-actions-group">
                           <button
                             className="mini-card-copy"
                             onClick={(e) => { e.stopPropagation(); shareWhatsApp(link, j.name, j.status.toUpperCase()); }}
                             title="Compartir por WhatsApp"
                           >
-                            <Share size={14} />
+                            <Share size={13} />
                           </button>
                           <button
                             className="mini-card-copy"
                             onClick={(e) => { e.stopPropagation(); copyToClipboard(link, j.id); }}
+                            title="Copiar Enlace"
                           >
-                            {copiedId === j.id ? <Check size={14} color="#00ffcc" /> : <Copy size={14} />}
+                            {copiedId === j.id ? <Check size={13} color="#00f5d4" /> : <Copy size={13} />}
                           </button>
                         </div>
                       </div>
@@ -641,7 +683,7 @@ export default function RomelAdmin({ setView }) {
             <div className="judgments-list">
               {filteredJudgments.length === 0 ? (
                 <div className="empty-list-message">
-                  {filterQuery ? "Sin resultados." : "No hay decretos activos. Sella uno a la izquierda."}
+                  {filterQuery ? "Sin resultados en el flujo." : "No hay decretos activos. Sella uno a la izquierda."}
                 </div>
               ) : (
                 filteredJudgments.map((j) => {
@@ -707,10 +749,17 @@ export default function RomelAdmin({ setView }) {
                           className="row-action-btn"
                         >
                           {copiedId === j.id ? (
-                            <><Check size={12} color="#00ffcc" /> Copiado</>
+                            <><Check size={12} color="#00f5d4" /> Copiado</>
                           ) : (
                             <><Copy size={12} /> Copiar Enlace</>
                           )}
+                        </button>
+                        <button
+                          onClick={() => handleDelete(j.id, j.name)}
+                          className="row-action-btn delete-row-btn"
+                          style={{ marginLeft: '12px' }}
+                        >
+                          <X size={12} /> Borrar
                         </button>
                       </div>
                     </div>

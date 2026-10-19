@@ -21,8 +21,8 @@ function MentalCard({ judgment }) {
     const x = e.clientX - box.left;
     const y = e.clientY - box.top;
 
-    const rx = -((y - box.height / 2) / (box.height / 2)) * 16;
-    const ry = ((x - box.width / 2) / (box.width / 2)) * 16;
+    const rx = -((y - box.height / 2) / (box.height / 2)) * 14;
+    const ry = ((x - box.width / 2) / (box.width / 2)) * 14;
     const px = (x / box.width) * 100;
     const py = (y / box.height) * 100;
 
@@ -56,7 +56,7 @@ function MentalCard({ judgment }) {
         style: format === "story" ? {
           transform: "none",
           padding: "40px 20px",
-          background: "#070714",
+          background: "#060611",
           borderRadius: "0px",
         } : {
           transform: "none"
@@ -78,103 +78,120 @@ function MentalCard({ judgment }) {
   const stars = Math.min(5, Math.max(1, fCategory || 1));
 
   return (
-    <div className="card-container" ref={containerRef}>
-      {digivolving && (
-        <div className="digivolve-overlay">
-          <div className="digi-ring ring-1"></div>
-          <div className="digi-ring ring-2"></div>
-          <div className="digi-ring ring-3"></div>
-          <div className="digi-data-streams">
-            <span className="digi-stream ds1"></span>
-            <span className="digi-stream ds2"></span>
-            <span className="digi-stream ds3"></span>
+    <div className="card-wrapper-outer" ref={containerRef}>
+      <div className="card-container">
+        {digivolving && (
+          <div className="digivolve-overlay">
+            <div className="digi-ring ring-1"></div>
+            <div className="digi-ring ring-2"></div>
+            <div className="digi-ring ring-3"></div>
+            <div className="digi-data-streams">
+              <span className="digi-stream ds1"></span>
+              <span className="digi-stream ds2"></span>
+              <span className="digi-stream ds3"></span>
+            </div>
+            <div className="digi-text">MODULANDO MATERIA Y ESPÍN...</div>
           </div>
-          <div className="digi-text">MODULANDO MATERIA Y ESPÍN...</div>
-        </div>
-      )}
-
-      <div
-        ref={cardRef}
-        className={`mental-card ${isProhibited ? "prohibited-theme" : "permitted-theme"} ${digivolving ? "digi-glitch" : ""}`}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          transform: `perspective(1000px) rotateX(${coords.rx}deg) rotateY(${coords.ry}deg)`,
-        }}
-      >
-        <div
-          className="card-holo-foil"
-          style={{
-            backgroundPosition: `${coords.px}% ${coords.py}%`,
-            opacity: coords.rx !== 0 ? 0.35 : 0
-          }}
-        />
+        )}
 
         <div
-          className="card-shine"
+          ref={cardRef}
+          className={`mental-card ${isProhibited ? "prohibited-theme" : "permitted-theme"} ${digivolving ? "digi-glitch" : ""}`}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
           style={{
-            background: `radial-gradient(circle at ${coords.px}% ${coords.py}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 50%)`
+            transform: `perspective(1100px) rotateX(${coords.rx}deg) rotateY(${coords.ry}deg)`,
           }}
-        />
+        >
+          {/* Inner Metallic Frame */}
+          <div className="card-inner-frame">
+            <div
+              className="card-holo-foil"
+              style={{
+                backgroundPosition: `${coords.px}% ${coords.py}%`,
+                opacity: coords.rx !== 0 ? 0.45 : 0.12
+              }}
+            />
 
-        <div className="card-neon-aura"></div>
+            <div
+              className="card-shine"
+              style={{
+                background: `radial-gradient(circle at ${coords.px}% ${coords.py}%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 55%)`
+              }}
+            />
 
-        <div className="card-header">
-          <span className="card-title">
-            JUICIO: {name.toUpperCase()}
-          </span>
-          <span className={`card-attribute ${isProhibited ? "attr-prohibited" : "attr-permitted"}`}>
-            {isProhibited ? <Ban size={13} /> : <CheckCircle size={13} />}
-            {isProhibited ? "PROHIBIDO" : "PERMITIDO"}
-          </span>
-        </div>
-
-        <div className="card-levels">
-          {Array.from({ length: stars }).map((_, i) => (
-            <div key={i} className="level-star">
-              <Orbit size={11} className="star-icon" />
+            {/* Header Nameplate */}
+            <div className="card-header">
+              <span className="card-title" title={name}>
+                {name.toUpperCase()}
+              </span>
+              <span className={`card-attribute ${isProhibited ? "attr-prohibited" : "attr-permitted"}`}>
+                {isProhibited ? <Ban size={12} /> : <CheckCircle size={12} />}
+                {isProhibited ? "PROHIBIDO" : "PERMITIDO"}
+              </span>
             </div>
-          ))}
-          <span className="level-label">NIVEL F{stars}</span>
-        </div>
 
-        <div className="card-image-box">
-          <img src={shakaCosmicImg} alt="Virgo Shaka" className="card-img" loading="lazy" />
-          <div className="card-image-lens-flare"></div>
-          <div className="card-image-border-glow"></div>
-          <div className={`holo-seal ${isProhibited ? "proh" : "perm"}`}>
-            <Trophy size={10} />
-          </div>
-        </div>
-
-        <div className="card-body">
-          <div className="card-type">[ CARTA DE LEY MENTAL ]</div>
-          <p className="card-description">
-            {isProhibited ? (
-              <>
-                <strong>[Decreto]:</strong> Al entrar en contacto con esta sentencia, la entropía molecular del sujeto se eleva a la masa de Planck. Queda cancelada toda digievolución orgánica.
-                Decreto: <em>"{voiceQuote || 'Sucios mortales'}"</em>.
-              </>
-            ) : (
-              <>
-                <strong>[Licencia]:</strong> Se concede estabilidad gravitatoria y salvaguarda mental por Virgo Shaka. Autorizado para vagar en materia bariónica.
-                Decreto: <em>"{voiceQuote || 'Lo permito...'}"</em>.
-              </>
-            )}
-          </p>
-
-          <div className="card-stats">
-            <div className="stat-item">
-              <span className="stat-lbl">ENT/</span>
-              <span className="stat-val">{entropy || (isProhibited ? 9999 : 0)}</span>
+            {/* Level / F-Category Row */}
+            <div className="card-levels">
+              <span className="edition-code">LCV-108</span>
+              <div className="stars-cluster">
+                {Array.from({ length: stars }).map((_, i) => (
+                  <div key={i} className="level-star">
+                    <Orbit size={12} className="star-icon" />
+                  </div>
+                ))}
+                <span className="level-label">NIVEL F{stars}</span>
+              </div>
             </div>
-            <div className="stat-item">
-              <span className="stat-lbl">NV/</span>
-              <span className="stat-val">{divineWill || (isProhibited ? "0" : "∞")}</span>
+
+            {/* Artwork Box */}
+            <div className="card-image-box">
+              <img src={shakaCosmicImg} alt="Virgo Shaka" className="card-img" loading="lazy" />
+              <div className="card-image-vignette"></div>
+              <div className="card-quantum-watermark">
+                {isProhibited ? "S = k_B ln Ω → ∞" : "iℏ ∂Ψ/∂t = ĤΨ"}
+              </div>
+              <div className={`holo-seal ${isProhibited ? "proh" : "perm"}`}>
+                <Trophy size={11} />
+              </div>
             </div>
-            <div className="stat-item">
-              <span className="stat-lbl">F/</span>
-              <span className="stat-val">{fCategory || 1}</span>
+
+            {/* Card Lore & Stats Box */}
+            <div className="card-body">
+              <div>
+                <div className="card-type">
+                  <span>[ CARTA DE LEY MENTAL / DECRETO ]</span>
+                  <span className="card-type-glyph">{isProhibited ? "封" : "☸"}</span>
+                </div>
+                <p className="card-description">
+                  {isProhibited ? (
+                    <>
+                      <strong>[Sentencia]:</strong> Al contacto con este decreto, la entropía molecular del sujeto se eleva a la masa de Planck. Queda cancelada toda digievolución orgánica.
+                      <span className="card-quote-line">«{voiceQuote || "Sucios mortales"}»</span>
+                    </>
+                  ) : (
+                    <>
+                      <strong>[Salvoconducto]:</strong> Se concede estabilidad gravitatoria y salvaguarda mental por Virgo Shaka. Autorizado para vagar en materia bariónica.
+                      <span className="card-quote-line">«{voiceQuote || "Lo permito..."}»</span>
+                    </>
+                  )}
+                </p>
+              </div>
+
+              <div className="card-stats">
+                <div className="stat-item">
+                  <span className="stat-lbl">ENT/</span>
+                  <span className="stat-val">{entropy ?? (isProhibited ? 9999 : 0)}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-lbl">NV/</span>
+                  <span className="stat-val">{divineWill || (isProhibited ? "0" : "∞")}</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-lbl">F/</span>
+                  <span className="stat-val">F{fCategory || 1}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -211,4 +228,3 @@ function MentalCard({ judgment }) {
 }
 
 export default memo(MentalCard);
-

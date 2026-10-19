@@ -4,7 +4,7 @@ import MentalCard from "../components/MentalCard";
 import GlassShatterOverlay from "../components/GlassShatterOverlay";
 import DivineCertificateModal from "../components/DivineCertificateModal";
 import { speakText } from "../components/CouncilVoices";
-import { ArrowLeft, Send, Sparkles, AlertTriangle, RefreshCw, Eye, Share, Shield, Zap, Flame, Award } from "lucide-react";
+import { ArrowLeft, Send, Sparkles, AlertTriangle, RefreshCw, Eye, Share, Shield, Zap, Flame, Award, Orbit } from "lucide-react";
 import "./RecipientView.css";
 
 export default function RecipientView({ judgmentId, fallbackEncoded, setView }) {
@@ -21,12 +21,10 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
 
   const prevStatusRef = useRef(null);
 
-  // Fetch judgment details
   const fetchDetails = useCallback(async () => {
     try {
       const data = await getJudgment(judgmentId, fallbackEncoded);
       if (data) {
-        // Detect real-time transformation from Prohibido to Permitido!
         if (prevStatusRef.current === "prohibido" && data.status === "permitido") {
           setShatterActive(true);
           speakText("¡El sello divino ha sido roto! El Creador Romel ha reescrito tu destino a PERMITIDO.", null, data.voicePitch || 1, data.voiceRate || 1);
@@ -50,7 +48,6 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
     fetchDetails();
   }, [fetchDetails]);
 
-  // Real-time polling to update recipient's view if Romel alters their destiny
   useEffect(() => {
     if (!judgmentId) return;
     const interval = setInterval(() => {
@@ -59,21 +56,19 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
     return () => clearInterval(interval);
   }, [judgmentId, fetchDetails]);
 
-  // Handle entry gate, send telemetry, and play transition
   const handleUnlockAndEnter = async () => {
     setIsTransitioning(true);
 
-    // Register telemetría de lectura (seen status)
     markJudgmentAsSeen(judgmentId);
-    
+
     if (judgment) {
       const pitch = judgment.voicePitch !== undefined ? judgment.voicePitch : 0.45;
       const rate = judgment.voiceRate !== undefined ? judgment.voiceRate : 0.8;
 
       const statusText = judgment.status === "prohibido" ? "PROHIBIDO" : "PERMITIDO";
-      
-      speakText(`Socio mortal... Has sido decretado como... ${statusText}.`, null, pitch, rate);
-      
+
+      speakText(`Sucio mortal... Has sido decretado como... ${statusText}.`, null, pitch, rate);
+
       setTimeout(() => {
         speakText(judgment.voiceQuote || "Lo permito...", null, pitch, rate);
       }, 4000);
@@ -85,13 +80,11 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
     }, 6000);
   };
 
-  // Preset appeal stances
   const applyPresetStance = (stanceKey, presetText) => {
     setAppealStance(stanceKey);
     setAppealText(presetText);
   };
 
-  // Submit appeal
   const handleAppealSubmit = async (e) => {
     e.preventDefault();
     if (!appealText.trim() || !judgment) return;
@@ -123,8 +116,10 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
 
   if (loading) {
     return (
-      <div className="loading-screen text-center">
-        <RefreshCw size={36} className="spin-icon text-gold" />
+      <div className="loading-screen">
+        <div className="loading-orb-wrap">
+          <RefreshCw size={38} className="spin-icon text-gold" />
+        </div>
         <p className="loading-text">Decodificando vector de entropía en el éter...</p>
       </div>
     );
@@ -132,27 +127,28 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
 
   if (error || !judgment) {
     return (
-      <div className="error-screen text-center">
-        <AlertTriangle size={48} className="text-red" />
-        <h2 className="error-title">SENTENCIA EXTRAVIADA</h2>
-        <p className="error-desc">{error || "El registro mental ha expirado o no existe."}</p>
-        <button onClick={() => setView("portal")} className="btn-primary">
-          <ArrowLeft size={16} /> Regresar al Plano Ordinario
-        </button>
+      <div className="error-screen">
+        <div className="error-card-box">
+          <AlertTriangle size={48} className="text-red" />
+          <h2 className="error-title">SENTENCIA EXTRAVIADA</h2>
+          <p className="error-desc">{error || "El registro mental ha expirado o no existe."}</p>
+          <button onClick={() => setView("portal")} className="btn-primary-return">
+            <ArrowLeft size={16} /> Regresar al Plano Ordinario
+          </button>
+        </div>
       </div>
     );
   }
 
-  // Eye Transition Overlay: Virgo Shaka abriendo los ojos con estallido divino
   if (isTransitioning) {
     return (
       <div className="shaka-eyes-transition">
         <div className="transition-space-grid"></div>
         <div className="shaka-mandala"></div>
+        <div className="shaka-mandala-inner"></div>
         <div className="eyes-svg-wrapper">
           <svg viewBox="0 0 400 150" className="shaka-eyes-svg" xmlns="http://www.w3.org/2000/svg">
             <g>
-              {/* Left Eye */}
               <path d="M 50,75 Q 100,25 150,75 Q 100,125 50,75 Z" className="eye-back" />
               <path d="M 50,75 Q 100,35 150,75" className="eye-lid-upper" />
               <path d="M 50,75 Q 100,115 150,75" className="eye-lid-lower" />
@@ -160,7 +156,6 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
               <circle cx="100" cy="75" r="8" className="eye-pupil-core" />
             </g>
             <g>
-              {/* Right Eye */}
               <path d="M 250,75 Q 300,25 350,75 Q 300,125 250,75 Z" className="eye-back" />
               <path d="M 250,75 Q 300,35 350,75" className="eye-lid-upper" />
               <path d="M 250,75 Q 300,115 350,75" className="eye-lid-lower" />
@@ -177,39 +172,51 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
     );
   }
 
-  // Pre-state: Gate to unlock audio context
   if (!unlocked) {
     return (
-      <div className="gate-screen text-center">
-        <div className="gate-glow-glyph">
-          <Eye size={64} className="glyph-eye" />
+      <div className="gate-screen">
+        <div className="gate-card-panel">
+          <div className="gate-eyebrow">
+            <Orbit size={13} className="spin-icon" />
+            <span>SANTUARIO DE VIRGO · SENTENCIA #{(judgment.id || "").substring(0, 6)}</span>
+          </div>
+
+          <div className="gate-glow-glyph">
+            <div className="gate-glyph-ring"></div>
+            <Eye size={52} className="glyph-eye" />
+          </div>
+
+          <h2 className="gate-title">DECRETO DIVINO PENDIENTE</h2>
+          <div className="gate-subject-tag">MORTAL CONVOCADO: {judgment.name.toUpperCase()}</div>
+          <p className="gate-desc">
+            El Creador Romel ha sellado tu destino molecular en la nube cuántica.
+            Prepárate para cruzar el Lost Canvas de Virgo Shaka y escuchar las voces del consejo.
+          </p>
+
+          <button onClick={handleUnlockAndEnter} className="gate-unlock-btn">
+            <Sparkles size={18} />
+            <span>ABRIR PORTAL DE DESTINO</span>
+          </button>
+
+          <button onClick={() => setView("portal")} className="gate-back-link">
+            Escapar al Plano Ordinario
+          </button>
         </div>
-        <h2 className="gate-title">DECRETO DIVINO PENDIENTE</h2>
-        <p className="gate-desc">
-          El Creador Romel ha sellado tu destino molecular en la nube cuántica.
-          Prepárate para cruzar el Lost Canvas de Virgo Shaka y escuchar las voces del consejo.
-        </p>
-        <button onClick={handleUnlockAndEnter} className="gate-unlock-btn">
-          <Sparkles size={18} /> ABRIR PORTAL DE DESTINO
-        </button>
-        <button onClick={() => setView("portal")} className="gate-back-link">
-          Escapar al Plano Ordinario
-        </button>
       </div>
     );
   }
 
   return (
     <div className="recipient-container">
-      {/* Real-time Glass Shatter transformation overlay */}
       <GlassShatterOverlay active={shatterActive} onComplete={() => setShatterActive(false)} />
 
-      {/* Back button */}
-      <button onClick={() => setView("portal")} className="back-btn-rec-top">
-        <ArrowLeft size={16} /> Salir del Portal
-      </button>
+      <div className="recipient-top-bar">
+        <button onClick={() => setView("portal")} className="back-btn-rec-top">
+          <ArrowLeft size={16} /> Salir del Portal
+        </button>
+        <span className="rec-id-badge">ID CUÁNTICO: #{(judgment.id || "").substring(0, 6)}</span>
+      </div>
 
-      {/* Main cosmic card display */}
       <div className="card-presentation-box">
         <div className="judgment-status-banner">
           {judgment.status === "prohibido" ? (
@@ -221,15 +228,17 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
 
         <MentalCard judgment={judgment} />
 
-        {judgment.status === "permitido" && (
-          <button onClick={() => setShowCertModal(true)} className="view-cert-btn">
-            <Award size={16} /> VER SALVOCONDUCTO DIVINO DE REDENCIÓN
-          </button>
-        )}
+        <div className="recipient-card-actions">
+          {judgment.status === "permitido" && (
+            <button onClick={() => setShowCertModal(true)} className="view-cert-btn">
+              <Award size={16} /> VER SALVOCONDUCTO DIVINO DE REDENCIÓN
+            </button>
+          )}
 
-        <button onClick={shareAppealWhatsApp} className="share-whatsapp-card-btn">
-          <Share size={16} /> Compartir Sentencia por WhatsApp
-        </button>
+          <button onClick={shareAppealWhatsApp} className="share-whatsapp-card-btn">
+            <Share size={16} /> Compartir Sentencia por WhatsApp
+          </button>
+        </div>
       </div>
 
       {showCertModal && (
@@ -256,8 +265,11 @@ export default function RecipientView({ judgmentId, fallbackEncoded, setView }) 
               <span className="pulse-dot"></span>
               <span>Esperando que el Creador Romel reevalúe tu destino en vivo...</span>
             </div>
-            <button onClick={shareAppealWhatsApp} className="send-appeal-btn" style={{ marginTop: '12px', background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)' }}>
-              <Share size={16} /> Compartir por WhatsApp
+            <button
+              onClick={shareAppealWhatsApp}
+              className="send-appeal-btn whatsapp-appeal-btn"
+            >
+              <Share size={16} /> Compartir Descargo por WhatsApp
             </button>
           </div>
         ) : (
